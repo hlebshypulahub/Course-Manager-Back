@@ -17,7 +17,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(columnDefinition = "serial")
-    private long id;
+    private Long id;
 
     @NotBlank
     @Size(min = 5, max = 32)
@@ -27,6 +27,8 @@ public class User {
     @Size(max = 50)
     @Email
     private String email;
+
+    private String company;
 
     @NotBlank
     @Size(min = 8)
@@ -51,10 +53,6 @@ public class User {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -69,6 +67,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 
     public String getPassword() {
