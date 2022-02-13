@@ -38,14 +38,14 @@ public class EmployeeDocumentService {
             html = Files.readString(Path.of("src/main/java/com/hs/coursemanagerback/documents/representation.html"));
 
             html = html.replace("POSITION", employee.getPosition())
-                       .replace("COMPANY", representationDto.getCompany())
+                       .replace("COMPANY", representationDto.getPrincipalCompany())
                        .replace("FULL_NAME", employee.getFullName())
                        .replace("CATEGORY", representationDto.getCategory().getRepresentationLabel())
                        .replace("ASSIGNMENT_OPEN", representationDto.isCategoryAssignment() ? "<u><b>" : "")
                        .replace("ASSIGNMENT_CLOSE", representationDto.isCategoryAssignment() ? "</b></u>" : "")
                        .replace("CONFIRMATION_OPEN", representationDto.isCategoryConfirmation() ? "<u><b>" : "")
                        .replace("CONFIRMATION_CLOSE", representationDto.isCategoryConfirmation() ? "</b></u>" : "")
-                       .replace("QUALIFICATION", employee.getQualification())
+                       .replace("QUALIFICATION", representationDto.getQualification())
                        .replace("OVERALL_WORK_EXPERIENCE", representationDto.getOverallWorkExperience())
                        .replace("LAST_POS_WORK_EXPERIENCE", representationDto.getLastPositionWorkExperience());
 

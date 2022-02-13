@@ -2,7 +2,6 @@ package com.hs.coursemanagerback.controller.employee;
 
 import com.hs.coursemanagerback.model.employee.Employee;
 import com.hs.coursemanagerback.model.employee.dto.*;
-import com.hs.coursemanagerback.model.enumeration.Category;
 import com.hs.coursemanagerback.model.enumeration.DocumentType;
 import com.hs.coursemanagerback.service.employee.EmployeeDataService;
 import com.hs.coursemanagerback.service.employee.EmployeeDocumentService;
@@ -75,19 +74,8 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeDataService.patch(id, employeeExemptionPatchDto));
     }
 
-    @PostMapping(value = "/{id}/documents/REPRESENTATION", produces = MediaType.TEXT_HTML_VALUE)
+    @PostMapping(value = "/{id}/documents/representation", produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity<byte[]> getDocument(@PathVariable(name = "id") Long employeeId, @RequestBody RepresentationDto representationDto) throws DocumentException, IOException {
-
-        /////////////////
-        representationDto.setOverallWorkExperience("6 лет");
-        representationDto.setLastPositionWorkExperience("5 лет");
-        representationDto.setRecommendation("используется в широком значении, включая и образцы устной речи. Восприятие текста изучается в рамках лингвистики текста и психолингвистики. Так, например");
-        representationDto.setFlaws("используется в широком значении, включая и образцы устной речи. Восприятие текста изучается в рамках лингвистики текста и психолингвистики. Так, например");
-        representationDto.setShowing("используется в широком значении, включая и образцы устной речи. Восприятие текста изучается в рамках лингвистики текста и психолингвистики. Так, например");
-        representationDto.setCompany("Частное торгово-производственное унитарное предприятие «Ледиком»");
-        representationDto.setCategoryConfirmation(true);
-        representationDto.setCategory(Category.FIRST);
-
         ByteArrayInputStream bis = employeeDocumentService.generateDocument(employeeId, representationDto);
 
         byte[] byteArray = bis.readAllBytes();

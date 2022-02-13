@@ -25,6 +25,7 @@ public class CategoryController {
             Map<String, String> obj = new HashMap<>();
             obj.put("name", temp.name());
             obj.put("label", temp.toString());
+            obj.put("representationLabel", temp.getRepresentationLabel());
             return obj;
         }).collect(Collectors.toList());
     }

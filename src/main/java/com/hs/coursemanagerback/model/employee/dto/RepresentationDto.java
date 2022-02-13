@@ -9,10 +9,11 @@ public class RepresentationDto {
     private String recommendation;
     private String showing;
     private String flaws;
-    private String company;
+    private String principalCompany;
     private boolean categoryConfirmation;
     private boolean categoryAssignment;
     private Category category;
+    private String qualification;
 
     public String getOverallWorkExperience() {
         return overallWorkExperience;
@@ -54,12 +55,12 @@ public class RepresentationDto {
         this.categoryAssignment = categoryAssignment;
     }
 
-    public String getCompany() {
-        return company;
+    public String getPrincipalCompany() {
+        return principalCompany;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
+    public void setPrincipalCompany(String principalCompany) {
+        this.principalCompany = principalCompany;
     }
 
     public Category getCategory() {
@@ -84,5 +85,13 @@ public class RepresentationDto {
 
     public void setFlaws(String flaws) {
         this.flaws = flaws;
+    }
+
+    public String getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(String qualification) {
+        this.qualification = qualification;
     }
 }
