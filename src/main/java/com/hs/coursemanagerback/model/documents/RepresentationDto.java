@@ -1,4 +1,4 @@
-package com.hs.coursemanagerback.model.employee.dto;
+package com.hs.coursemanagerback.model.documents;
 
 import com.hs.coursemanagerback.model.enumeration.Category;
 

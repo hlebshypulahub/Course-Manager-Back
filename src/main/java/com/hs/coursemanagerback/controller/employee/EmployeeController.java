@@ -1,11 +1,12 @@
 package com.hs.coursemanagerback.controller.employee;
 
+import com.hs.coursemanagerback.model.documents.QualificationSheetDto;
+import com.hs.coursemanagerback.model.documents.RepresentationDto;
 import com.hs.coursemanagerback.model.employee.Employee;
 import com.hs.coursemanagerback.model.employee.dto.*;
 import com.hs.coursemanagerback.model.enumeration.DocumentType;
 import com.hs.coursemanagerback.service.employee.EmployeeDataService;
 import com.hs.coursemanagerback.service.employee.EmployeeDocumentService;
-import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -75,7 +75,7 @@ public class EmployeeController {
     }
 
     @PostMapping(value = "/{id}/documents/representation", produces = MediaType.TEXT_HTML_VALUE)
-    public ResponseEntity<byte[]> getDocument(@PathVariable(name = "id") Long employeeId, @RequestBody RepresentationDto representationDto) throws DocumentException, IOException {
+    public ResponseEntity<byte[]> getDocument(@PathVariable(name = "id") Long employeeId, @RequestBody RepresentationDto representationDto) {
         ByteArrayInputStream bis = employeeDocumentService.generateDocument(employeeId, representationDto);
 
         byte[] byteArray = bis.readAllBytes();
@@ -84,6 +84,20 @@ public class EmployeeController {
         headers.setContentType(MediaType.valueOf(MediaType.TEXT_HTML_VALUE));
         headers.setContentLength(byteArray.length);
         headers.add("Content-Disposition", "inline; filename=" + employeeId + "_" + DocumentType.REPRESENTATION.getLabel() + ".html");
+
+        return new ResponseEntity<>(byteArray, headers, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/{id}/documents/qualification-sheet", produces = MediaType.TEXT_HTML_VALUE)
+    public ResponseEntity<byte[]> getDocument(@PathVariable(name = "id") Long employeeId, @RequestBody QualificationSheetDto qualificationSheetDto) {
+        ByteArrayInputStream bis = employeeDocumentService.generateDocument(employeeId, qualificationSheetDto);
+
+        byte[] byteArray = bis.readAllBytes();
+
+        var headers = new HttpHeaders();
+        headers.setContentType(MediaType.valueOf(MediaType.TEXT_HTML_VALUE));
+        headers.setContentLength(byteArray.length);
+        headers.add("Content-Disposition", "inline; filename=document.html");
 
         return new ResponseEntity<>(byteArray, headers, HttpStatus.OK);
     }

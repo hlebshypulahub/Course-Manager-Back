@@ -5,17 +5,19 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Category {
 
-    NONE("Нет", ""),
-    SECOND("Вторая", "Второй"),
-    FIRST("Первая", "Первой"),
-    HIGHEST("Высшая", "Высшей");
+    NONE("Нет", "", ""),
+    SECOND("Вторая", "Второй", "Вторую"),
+    FIRST("Первая", "Первой", "Первую"),
+    HIGHEST("Высшая", "Высшей", "Высшую");
 
     private final String label;
     private final String representationLabel;
+    private final String qualificationSheetLabel;
 
-    Category(String label, String representationLabel) {
+    Category(String label, String representationLabel, String qualificationSheetLabel) {
         this.label = label;
         this.representationLabel = representationLabel;
+        this.qualificationSheetLabel = qualificationSheetLabel;
     }
 
     @Override
@@ -33,5 +35,9 @@ public enum Category {
 
     public String getName() {
         return this.name();
+    }
+
+    public String getQualificationSheetLabel() {
+        return qualificationSheetLabel;
     }
 }

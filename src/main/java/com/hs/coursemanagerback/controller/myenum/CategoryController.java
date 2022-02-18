@@ -26,6 +26,7 @@ public class CategoryController {
             obj.put("name", temp.name());
             obj.put("label", temp.toString());
             obj.put("representationLabel", temp.getRepresentationLabel());
+            obj.put("qualificationSheetLabel", temp.getQualificationSheetLabel());
             return obj;
         }).collect(Collectors.toList());
     }
