@@ -29,16 +29,15 @@ public class EmployeeCategoryService {
                            .orElseThrow(() -> new EmptyCoursesListException("")).getStartDate().isBefore(LocalDate.now().minusYears(Employee.CATEGORY_VERIFICATION_YEARS))) {
             /// Прошло более 3 лет от даты окончания УЗ
             if (employee.getEduGraduationDate().isBefore(LocalDate.now().minusYears(Employee.WORK_EXPIRIANCE_TO_CATEGORY_PROMOTION_YEARS))) {
-                /// ?????????????????????????????
                 /// Дедлайн категории устанавливается на { Дата окончания УЗ + 1 год }
                 /// Дата возможного повышения устанавливается на { Дата окончания УЗ + 3 года }
-                setNoneCategoryDates(employee, LocalDate.now().plusYears(1));
+                setNoneCategoryDates(employee, LocalDate.now().plusMonths(6));
             }
             /// Прошло менее 3 лет от даты окончания УЗ
             else {
                 /// Дедлайн категории устанавливается на { Дата окончания УЗ + 3 года }
                 /// Дата возможного повышения устанавливается на { Дата окончания УЗ + 3 года }
-                setNoneCategoryDates(employee, employee.getEduGraduationDate().plusYears(Employee.WORK_EXPIRIANCE_TO_CATEGORY_PROMOTION_YEARS));
+                setNoneCategoryDates(employee, employee.getEduGraduationDate().plusYears(Employee.WORK_EXPIRIANCE_TO_CATEGORY_PROMOTION_YEARS).plusMonths(Employee.DOCS_SUBMIT_MONTHS));
             }
         }
         /// Прошло менее 5 лет от даты последнего курса

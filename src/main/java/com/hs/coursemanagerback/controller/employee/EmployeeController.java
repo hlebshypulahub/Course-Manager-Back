@@ -1,5 +1,6 @@
 package com.hs.coursemanagerback.controller.employee;
 
+import com.hs.coursemanagerback.model.documents.ProfessionalReportDto;
 import com.hs.coursemanagerback.model.documents.QualificationSheetDto;
 import com.hs.coursemanagerback.model.documents.RepresentationDto;
 import com.hs.coursemanagerback.model.employee.Employee;
@@ -83,7 +84,7 @@ public class EmployeeController {
         var headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf(MediaType.TEXT_HTML_VALUE));
         headers.setContentLength(byteArray.length);
-        headers.add("Content-Disposition", "inline; filename=" + employeeId + "_" + DocumentType.REPRESENTATION.getLabel() + ".html");
+        headers.add("Content-Disposition", "inline; filename=document.html");
 
         return new ResponseEntity<>(byteArray, headers, HttpStatus.OK);
     }
@@ -91,6 +92,20 @@ public class EmployeeController {
     @PostMapping(value = "/{id}/documents/qualification-sheet", produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity<byte[]> getDocument(@PathVariable(name = "id") Long employeeId, @RequestBody QualificationSheetDto qualificationSheetDto) {
         ByteArrayInputStream bis = employeeDocumentService.generateDocument(employeeId, qualificationSheetDto);
+
+        byte[] byteArray = bis.readAllBytes();
+
+        var headers = new HttpHeaders();
+        headers.setContentType(MediaType.valueOf(MediaType.TEXT_HTML_VALUE));
+        headers.setContentLength(byteArray.length);
+        headers.add("Content-Disposition", "inline; filename=document.html");
+
+        return new ResponseEntity<>(byteArray, headers, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/{id}/documents/professional-report", produces = MediaType.TEXT_HTML_VALUE)
+    public ResponseEntity<byte[]> getDocument(@PathVariable(name = "id") Long employeeId, @RequestBody ProfessionalReportDto professionalReportDto) {
+        ByteArrayInputStream bis = employeeDocumentService.generateDocument(employeeId, professionalReportDto);
 
         byte[] byteArray = bis.readAllBytes();
 

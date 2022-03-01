@@ -2,7 +2,6 @@ package com.hs.coursemanagerback.service.course;
 
 import com.hs.coursemanagerback.model.course.Course;
 import com.hs.coursemanagerback.model.employee.Employee;
-import com.hs.coursemanagerback.model.enumeration.Category;
 import com.hs.coursemanagerback.repository.CourseRepository;
 import com.hs.coursemanagerback.service.employee.EmployeeValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,18 +39,18 @@ public class CourseService {
 
     public void process(@Valid Employee employee) {
         if (employeeValidationService.categoryIsValid(employee)) {
-            if (employee.getCategory() == Category.NONE) {
+//            if (employee.getCategory() == Category.NONE) {
                 employee.setCourseHoursSum(employee.getCourses().stream().filter(course ->
                         courseIsBetweenDates(course,
                                 employee.getCategoryAssignmentDeadlineDate().minusYears(Employee.CATEGORY_VERIFICATION_YEARS),
                                 employee.getCategoryAssignmentDeadlineDate())
                 ).mapToInt(Course::getHours).sum());
-            } else {
-                employee.setCourseHoursSum(employee.getCourses().stream().filter(course ->
-                        courseIsBetweenDates(course,
-                                employee.getCategoryAssignmentDate(), employee.getCategoryAssignmentDeadlineDate())
-                ).mapToInt(Course::getHours).sum());
-            }
+//            } else {
+//                employee.setCourseHoursSum(employee.getCourses().stream().filter(course ->
+//                        courseIsBetweenDates(course,
+//                                employee.getCategoryAssignmentDate(), employee.getCategoryAssignmentDeadlineDate())
+//                ).mapToInt(Course::getHours).sum());
+//            }
         }
     }
 

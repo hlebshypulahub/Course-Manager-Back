@@ -1,6 +1,7 @@
 package com.hs.coursemanagerback.service.employee;
 
 import com.hs.coursemanagerback.model.documents.PastJob;
+import com.hs.coursemanagerback.model.documents.ProfessionalReportDto;
 import com.hs.coursemanagerback.model.documents.QualificationSheetDto;
 import com.hs.coursemanagerback.model.documents.RepresentationDto;
 import com.hs.coursemanagerback.model.employee.Employee;
@@ -34,6 +35,13 @@ public class EmployeeDocumentService {
         return generateRepresentation(employee, representationDto);
     }
 
+    public ByteArrayInputStream generateDocument(Long employeeId, ProfessionalReportDto professionalReportDto) {
+
+        Employee employee = employeeDataService.findById(employeeId);
+
+        return generateProfessionalReport(employee, professionalReportDto);
+    }
+
     public ByteArrayInputStream generateDocument(Long employeeId, QualificationSheetDto qualificationSheetDto) {
 
         Employee employee = employeeDataService.findById(employeeId);
@@ -48,7 +56,7 @@ public class EmployeeDocumentService {
             html = Files.readString(Path.of("src/main/java/com/hs/coursemanagerback/documents/qualification_sheet.html"));
 
             html = html.replace("FULL_NAME", employee.getFullName())
-                       .replace("POSITION_AND_PRINCIPAL_COMPANY", qualificationSheetDto.getPositionAndPrincipalCompany())
+//                       .replace("POSITION_AND_PRINCIPAL_COMPANY", qualificationSheetDto.getPositionAndPrincipalCompany())
                        .replace("DOB", qualificationSheetDto.getDob())
                        .replace("GRADUATION_YEAR", String.valueOf(employee.getEduGraduationDate().getYear()))
                        .replace("EDU_NAME", employee.getEduName())
@@ -63,64 +71,15 @@ public class EmployeeDocumentService {
                        .replace("QUALIFICATION", qualificationSheetDto.getQualification())
                        .replace("CAT_ASSIGNMENT_DATE", LocalDateToStringConverter.convert(employee.getCategoryAssignmentDate()));
 
-            StringBuilder professionalTraining = new StringBuilder();
-            String[] strArray = StringDocumentsUtils.separate(qualificationSheetDto.getProfessionalTraining());
-            for (String s : strArray) {
-                professionalTraining.append("<div style=\"display: table\">\n" +
-                        "        <div style=\"display: table-cell\">&nbsp;&nbsp;&nbsp;</div>\n" +
-                        "        <div style=\"display: table-cell\">\n" +
-                        "            <u>\n" +
-                        "                <pre class=\"line font-set\">&nbsp; " + s + "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </pre>\n" +
-                        "            </u>&nbsp;\n" +
-                        "        </div>\n" +
-                        "    </div>");
-            }
-            html = html.replace("PROFESSIONAL_TRAINING", professionalTraining.toString());
-
-            strArray = StringDocumentsUtils.separate(qualificationSheetDto.getInventions(), 30);
-            if (strArray.length > 1) {
-                html = html.replace("INVENTIONS1", strArray[0]);
-                StringBuilder inventions = new StringBuilder();
-                for (int i = 1; i < strArray.length; i++) {
-                    inventions.append("<div style=\"display: table\">\n" +
-                            "        <div style=\"display: table-cell\">&nbsp;&nbsp;&nbsp;</div>\n" +
-                            "        <div style=\"display: table-cell\">\n" +
-                            "            <u>\n" +
-                            "                <pre class=\"line font-set\">&nbsp; " + strArray[i] + "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </pre>\n" +
-                            "            </u>&nbsp;\n" +
-                            "        </div>\n" +
-                            "    </div>");
-                }
-                html = html.replace("INVENTIONS2", inventions + "<div class=\"space\"></div>");
-            } else {
-                html = html.replace("INVENTIONS1", qualificationSheetDto.getInventions())
-                           .replace("INVENTIONS2", "");
-            }
-
-            strArray = StringDocumentsUtils.separate(qualificationSheetDto.getClubs(), 50);
-            if (strArray.length > 1) {
-                html = html.replace("CLUBS1", strArray[0]);
-                StringBuilder clubs = new StringBuilder();
-                for (int i = 1; i < strArray.length; i++) {
-                    clubs.append("<div style=\"display: table\">\n" +
-                            "        <div style=\"display: table-cell\">&nbsp;&nbsp;&nbsp;</div>\n" +
-                            "        <div style=\"display: table-cell\">\n" +
-                            "            <u>\n" +
-                            "                <pre class=\"line font-set\">&nbsp; " + strArray[i] + "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </pre>\n" +
-                            "            </u>&nbsp;\n" +
-                            "        </div>\n" +
-                            "    </div>");
-                }
-                html = html.replace("CLUBS2", clubs + "<div class=\"space\"></div>");
-            } else {
-                html = html.replace("CLUBS1", qualificationSheetDto.getClubs())
-                           .replace("CLUBS2", "");
-            }
-
+            html = StringDocumentsUtils.replace(html, "POSITION_AND_PRINCIPAL_COMPANY", qualificationSheetDto.getPositionAndPrincipalCompany(), 100);
+            html = StringDocumentsUtils.replace(html, "PROFESSIONAL_TRAINING", qualificationSheetDto.getProfessionalTraining());
+            html = StringDocumentsUtils.replace(html, "CLUBS", qualificationSheetDto.getClubs(), 50);
+            html = StringDocumentsUtils.replace(html, "INVENTIONS", qualificationSheetDto.getInventions(), 30);
+            
             StringBuilder pastJobs = new StringBuilder();
             for (PastJob pastJob : qualificationSheetDto.getPastJobs()) {
                 StringBuilder pastJobSb = new StringBuilder();
-                strArray = StringDocumentsUtils.separate(pastJob.getPastJob());
+                String []strArray = StringDocumentsUtils.separate(pastJob.getPastJob());
                 for (String s : strArray) {
                     pastJobSb.append("<div style=\"display: table\">\n" +
                             "        <div style=\"display: table-cell\">&nbsp;&nbsp;&nbsp;</div>\n" +
@@ -154,7 +113,84 @@ public class EmployeeDocumentService {
             }
             html = html.replace("PAST_JOBS", pastJobs.toString());
 
-//                    PAST_JOB + DATES
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new ByteArrayInputStream(html.getBytes());
+    }
+
+    private ByteArrayInputStream generateProfessionalReport(Employee employee, ProfessionalReportDto professionalReportDto) {
+        String html = "";
+
+        try {
+            html = Files.readString(Path.of("src/main/java/com/hs/coursemanagerback/documents/professional_report.html"));
+
+            html = html.replace("START_YEAR", professionalReportDto.getStartYear())
+                    .replace("END_YEAR", professionalReportDto.getEndYear());
+
+            String[] strArray = StringDocumentsUtils.separate(professionalReportDto.getMainInfo());
+            StringBuilder mi = new StringBuilder("");
+            if (strArray.length == 1) {
+                mi.append("<div>\n" +
+                        "            <u>\n" +
+                        "                <pre class=\"line font-set\">&nbsp;&nbsp;&nbsp;&nbsp; " + strArray[0] + "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               </pre>\n" +
+                        "            </u>&nbsp;\n" +
+                        "        </div>\n" +
+                        "        <div class=\"small\">(указываются фамилия, собственное имя, отчество (если таковое имеется), должность служащего,</div>\n" +
+                        "        <div class=\"small\" style=\"margin-top: -2px\">организация, индивидуальный предприниматель, где работает данный работник)</div>");
+
+                html = html.replace("MAIN_INFO", mi + "<div class=\"space\"></div>");
+            } else if (strArray.length > 1) {
+                mi.append("<div>\n" +
+                        "            <u>\n" +
+                        "                <pre class=\"line font-set\">&nbsp;&nbsp;&nbsp;&nbsp; " + strArray[0] + "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 </pre>\n" +
+                        "            </u>&nbsp;\n" +
+                        "        </div>\n" +
+                        "        <div class=\"small\">(указываются фамилия, собственное имя, отчество (если таковое имеется), должность служащего,</div>\n" +
+                        "        <div>\n" +
+                        "            <u>\n" +
+                        "                <pre class=\"line font-set\">&nbsp;&nbsp;&nbsp;&nbsp; " + strArray[1] + "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               </pre>\n" +
+                        "            </u>&nbsp;\n" +
+                        "        </div>\n" +
+                        "        <div class=\"small\">организация, индивидуальный предприниматель, где работает данный работник)</div>");
+
+                if (strArray.length > 2) {
+                    for (int i = 2; i < strArray.length; i++) {
+                        mi.append("<div>\n" +
+                                "        <u>\n" +
+                                "            <pre class=\"line font-set\">&nbsp;&nbsp;&nbsp;&nbsp; " + strArray[i] + "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           </pre>\n" +
+                                "        </u>&nbsp;\n" +
+                                "    </div>");
+                    }
+                }
+
+                html = html.replace("MAIN_INFO", mi + "<div class=\"space\"></div>");
+            } else {
+                html = html.replace("MAIN_INFO", mi.toString());
+            }
+
+            strArray = StringDocumentsUtils.separate(professionalReportDto.getText());
+            StringBuilder text = new StringBuilder("");
+            for (int i = 0; i < strArray.length; i++) {
+                html = html.replace("TEXT" + (i + 1), strArray[i]);
+            }
+            for (int i = strArray.length; i < 6; i++) {
+                html = html.replace("TEXT" + (i + 1), "");
+            }
+            if (strArray.length > 6) {
+                for (int i = 6; i < strArray.length; i++) {
+                    text.append("<div>\n" +
+                            "        <u>\n" +
+                            "            <pre class=\"line font-set\">&nbsp;&nbsp;&nbsp;&nbsp; " + strArray[i] + "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             </pre>\n" +
+                            "        </u>&nbsp;\n" +
+                            "    </div>");
+                }
+                html = html.replace("TEXT", text + "<div class=\"space\"></div>");
+            } else {
+                html = html.replace("TEXT", "");
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -169,7 +205,6 @@ public class EmployeeDocumentService {
             html = Files.readString(Path.of("src/main/java/com/hs/coursemanagerback/documents/representation.html"));
 
             html = html.replace("POSITION", employee.getPosition())
-                       .replace("COMPANY", representationDto.getPrincipalCompany())
                        .replace("FULL_NAME", employee.getFullName())
                        .replace("CATEGORY", representationDto.getCategory().getRepresentationLabel())
                        .replace("ASSIGNMENT_OPEN", representationDto.isCategoryAssignment() ? "<u><b>" : "")
@@ -180,14 +215,10 @@ public class EmployeeDocumentService {
                        .replace("OVERALL_WORK_EXPERIENCE", representationDto.getOverallWorkExperience())
                        .replace("LAST_POS_WORK_EXPERIENCE", representationDto.getLastPositionWorkExperience());
 
-            String[] strArray = StringDocumentsUtils.separate(representationDto.getRecommendation(), 70);
-            html = StringDocumentsUtils.concatLines(html, strArray, "RECOMMENDATION");
-
-            strArray = StringDocumentsUtils.separate(representationDto.getShowing(), 40);
-            html = StringDocumentsUtils.concatLines(html, strArray, "SHOWING");
-
-            strArray = StringDocumentsUtils.separate(representationDto.getFlaws(), 30);
-            html = StringDocumentsUtils.concatLines(html, strArray, "FLAWS");
+            html = StringDocumentsUtils.replace(html, "COMPANY", representationDto.getPrincipalCompany());
+            html = StringDocumentsUtils.replace(html, "RECOMMENDATION", representationDto.getRecommendation(), 70);
+            html = StringDocumentsUtils.replace(html, "SHOWING", representationDto.getShowing(), 40);
+            html = StringDocumentsUtils.replace(html, "FLAWS", representationDto.getFlaws(), 30);
 
         } catch (IOException e) {
             e.printStackTrace();

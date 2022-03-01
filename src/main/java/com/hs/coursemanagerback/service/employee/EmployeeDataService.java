@@ -107,7 +107,6 @@ public class EmployeeDataService {
 
     private void patchEmployeeActive(Employee employee, EmployeePatchDto employeePatchDto) {
         BeanUtils.copyProperties(employeePatchDto, employee);
-        System.out.println(employeePatchDto);
         employeeExemptionService.process(employee);
     }
 }
