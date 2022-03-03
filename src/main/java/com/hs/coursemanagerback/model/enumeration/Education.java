@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Education {
 
-    SECONDARY("Średnie", 50, 80),
-    HIGHER("Wyższe", 100, 160);
+    SECONDARY("Среднее", 50, 80),
+    HIGHER("Высшее", 100, 160);
 
     private final String label;
     private final int requiredHoursNoneCategory;

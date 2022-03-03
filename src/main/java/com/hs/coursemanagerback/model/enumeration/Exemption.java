@@ -6,13 +6,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public enum Exemption {
 
     /// Может сделать, что когда ставишь старт дату, то автоматом ставится дата конца как { старт дата + 1 год }?
-    LESS_THAN_YEAR_WORK("Praca na odpowiednim stanowisku krócej niż rok", 0, 12),
-    PREGNANCY("Ciąża", 12),
-    CONSCRIPTION("Zatrudnienie na poprzednie stanowisko pracy po odbyciu służby wojskowej przez pobór", 12),
-    TREATMENT("Długotrwałe (ponad 4 miesiące) leczenie", 6, 4),
-    BUSINESS_TRIP("Wyjazd służbowy za granicę (na więcej, niż 4 miesiące)", 6, 4),
-    STUDIES("Studia podyplomowe", 6),
-    MATERNITY_LEAVE("Urlop macierzyński", 12);
+    LESS_THAN_YEAR_WORK("Работа в соответствующей должности служащего менее года", 0, 12),
+    PREGNANCY("Беременность", 12),
+    CONSCRIPTION("Принят на прежнее место работы после прохождения военной службы по призыву, альтернативной службы", 12),
+    TREATMENT("Нахождение на длительном (более четырех месяцев) излечении", 6, 4),
+    BUSINESS_TRIP("Нахождение в заграничных командировках более четырех месяцев", 6, 4),
+    STUDIES("Прохождение обучения в аспирантуре, докторантуре, подготовки в резидентуре в очной форме", 6),
+    MATERNITY_LEAVE("Нахождение в отпуске по беременности и родам, в отпуске по уходу за ребенком до достижения им возраста трех лет", 12);
 
     private final String label;
     private final int monthsDuration;

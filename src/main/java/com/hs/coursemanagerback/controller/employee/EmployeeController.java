@@ -5,7 +5,6 @@ import com.hs.coursemanagerback.model.documents.QualificationSheetDto;
 import com.hs.coursemanagerback.model.documents.RepresentationDto;
 import com.hs.coursemanagerback.model.employee.Employee;
 import com.hs.coursemanagerback.model.employee.dto.*;
-import com.hs.coursemanagerback.model.enumeration.DocumentType;
 import com.hs.coursemanagerback.service.employee.EmployeeDataService;
 import com.hs.coursemanagerback.service.employee.EmployeeDocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,27 +49,27 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeDataService.findById(id));
     }
 
-    @PatchMapping(path = "/{id}/education", consumes = "application/merge-patch+json")
+    @PostMapping(path = "/{id}/education", consumes = "application/json")
     public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeEducationPatchDto employeeEducationPatchDto) {
         return ResponseEntity.ok(employeeDataService.patch(id, employeeEducationPatchDto));
     }
 
-    @PatchMapping(path = "/{id}/category", consumes = "application/merge-patch+json")
+    @PostMapping(path = "/{id}/category", consumes = "application/json")
     public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeCategoryPatchDto employeeCategoryPatchDto) {
         return ResponseEntity.ok(employeeDataService.patch(id, employeeCategoryPatchDto));
     }
 
-    @PatchMapping(path = "/{id}/category-deadline", consumes = "application/merge-patch+json")
+    @PostMapping(path = "/{id}/category-deadline", consumes = "application/json")
     public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeCategoryDeadlinePatchDto employeeCategoryDeadlinePatchDto) {
         return ResponseEntity.ok(employeeDataService.patch(id, employeeCategoryDeadlinePatchDto));
     }
 
-    @PatchMapping(path = "/{id}/active", consumes = "application/merge-patch+json")
+    @PostMapping(path = "/{id}/active", consumes = "application/json")
     public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeActivePatchDto employeeActivePatchDto) {
         return ResponseEntity.ok(employeeDataService.patch(id, employeeActivePatchDto));
     }
 
-    @PatchMapping(path = "/{id}/exemption", consumes = "application/merge-patch+json")
+    @PostMapping(path = "/{id}/exemption", consumes = "application/json")
     public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeExemptionPatchDto employeeExemptionPatchDto) {
         return ResponseEntity.ok(employeeDataService.patch(id, employeeExemptionPatchDto));
     }

@@ -56,7 +56,6 @@ public class EmployeeDocumentService {
             html = Files.readString(Path.of("src/main/java/com/hs/coursemanagerback/documents/qualification_sheet.html"));
 
             html = html.replace("FULL_NAME", employee.getFullName())
-//                       .replace("POSITION_AND_PRINCIPAL_COMPANY", qualificationSheetDto.getPositionAndPrincipalCompany())
                        .replace("DOB", qualificationSheetDto.getDob())
                        .replace("GRADUATION_YEAR", String.valueOf(employee.getEduGraduationDate().getYear()))
                        .replace("EDU_NAME", employee.getEduName())

@@ -2,7 +2,7 @@ package com.hs.coursemanagerback.utils;
 
 public class StringDocumentsUtils {
 
-    private static final int CHAR_LIMIT = 110;
+    private static final int CHAR_LIMIT = 100;
 
     public static String[] separate(String str, int firstLimit) {
         StringBuilder justifiedText = new StringBuilder();
@@ -27,23 +27,12 @@ public class StringDocumentsUtils {
                 limit = CHAR_LIMIT;
             }
         }
+
         return justifiedText.toString().split(System.lineSeparator());
     }
 
     public static String[] separate(String str) {
         return separate(str, CHAR_LIMIT);
-    }
-
-    public static String concatLines(String html, String[] strArray, String toReplace) {
-        for (int i = 0; i < 3; i++) {
-            if (i < strArray.length) {
-                html = html.replace(toReplace + (i + 1), strArray[i]);
-            } else {
-                html = html.replace(toReplace + (i + 1), "");
-            }
-        }
-
-        return html;
     }
 
     public static String replace(String html, String toReplace, String text, int... firstLimitParam) {
