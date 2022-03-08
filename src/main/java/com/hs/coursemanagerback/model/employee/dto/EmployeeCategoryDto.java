@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 @CategoryAssignmentDateNotNull
 @CategoryNumberNotBlank
-public class EmployeeCategoryPatchDto extends EmployeePatchDto {
+public class EmployeeCategoryDto extends EmployeePatchDto {
 
     @NotBlank(message = "qualification cannot be blank")
     private String qualification;

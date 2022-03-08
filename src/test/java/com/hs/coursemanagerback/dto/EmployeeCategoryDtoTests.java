@@ -1,6 +1,6 @@
 package com.hs.coursemanagerback.dto;
 
-import com.hs.coursemanagerback.model.employee.dto.EmployeeCategoryPatchDto;
+import com.hs.coursemanagerback.model.employee.dto.EmployeeCategoryDto;
 import com.hs.coursemanagerback.model.enumeration.Category;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,99 +20,99 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /// Unit tests
 @SpringBootTest
 @ActiveProfiles("test")
-public class EmployeeCategoryPatchDtoTests {
+public class EmployeeCategoryDtoTests {
 
     @Autowired
     Validator validator;
 
-    private EmployeeCategoryPatchDto employeeCategoryPatchDto;
+    private EmployeeCategoryDto employeeCategoryDto;
 
     @BeforeEach
     public void before() {
-        employeeCategoryPatchDto = new EmployeeCategoryPatchDto();
-        employeeCategoryPatchDto.setCategory(Category.FIRST);
-        employeeCategoryPatchDto.setCategoryNumber("228");
-        employeeCategoryPatchDto.setCategoryAssignmentDate(LocalDate.of(2020, 5, 5));
-        employeeCategoryPatchDto.setQualification("Farmaceuta");
+        employeeCategoryDto = new EmployeeCategoryDto();
+        employeeCategoryDto.setCategory(Category.FIRST);
+        employeeCategoryDto.setCategoryNumber("228");
+        employeeCategoryDto.setCategoryAssignmentDate(LocalDate.of(2020, 5, 5));
+        employeeCategoryDto.setQualification("Farmaceuta");
     }
 
     @AfterEach
     public void after() {
-        employeeCategoryPatchDto = null;
+        employeeCategoryDto = null;
     }
 
     @Test
     public void When_Valid_Then_ViolationsEmpty() {
-        Set<ConstraintViolation<EmployeeCategoryPatchDto>> violations = validator.validate(employeeCategoryPatchDto);
+        Set<ConstraintViolation<EmployeeCategoryDto>> violations = validator.validate(employeeCategoryDto);
 
         assertTrue(violations.isEmpty());
     }
 
     @Test
     public void When_QualificationIsBlank_Should_ThrowConstraintViolationException() {
-        employeeCategoryPatchDto.setQualification(" ");
+        employeeCategoryDto.setQualification(" ");
 
-        Set<ConstraintViolation<EmployeeCategoryPatchDto>> violations = validator.validate(employeeCategoryPatchDto);
+        Set<ConstraintViolation<EmployeeCategoryDto>> violations = validator.validate(employeeCategoryDto);
 
         assertEquals("qualification cannot be blank", violations.iterator().next().getMessage());
     }
 
     @Test
     public void When_CategoryIsNull_Should_ThrowConstraintViolationException() {
-        employeeCategoryPatchDto.setCategory(null);
+        employeeCategoryDto.setCategory(null);
 
-        Set<ConstraintViolation<EmployeeCategoryPatchDto>> violations = validator.validate(employeeCategoryPatchDto);
+        Set<ConstraintViolation<EmployeeCategoryDto>> violations = validator.validate(employeeCategoryDto);
 
         assertEquals("category cannot be null", violations.iterator().next().getMessage());
     }
 
     @Test
     public void When_CategoryAssignmentDateIsNull_And_CategoryIsNotNone_Should_ThrowConstraintViolationException() {
-        employeeCategoryPatchDto.setCategoryAssignmentDate(null);
+        employeeCategoryDto.setCategoryAssignmentDate(null);
 
-        Set<ConstraintViolation<EmployeeCategoryPatchDto>> violations = validator.validate(employeeCategoryPatchDto);
+        Set<ConstraintViolation<EmployeeCategoryDto>> violations = validator.validate(employeeCategoryDto);
 
         assertEquals("CategoryAssignmentDateNotNull constraint violation", violations.iterator().next().getMessage());
     }
 
     @Test
     public void When_CategoryNumberIsBlank_And_CategoryIsNotNone_Should_ThrowConstraintViolationException() {
-        employeeCategoryPatchDto.setCategoryNumber("");
+        employeeCategoryDto.setCategoryNumber("");
 
-        Set<ConstraintViolation<EmployeeCategoryPatchDto>> violations = validator.validate(employeeCategoryPatchDto);
+        Set<ConstraintViolation<EmployeeCategoryDto>> violations = validator.validate(employeeCategoryDto);
 
         assertEquals("CategoryNumberNotBlank constraint violation", violations.iterator().next().getMessage());
     }
 
     @Test
     public void When_CategoryNumberIsBlank_And_CategoryAssignmentDateIsNull_And_CategoryIsNotNone_Should_ThrowConstraintViolationException() {
-        employeeCategoryPatchDto.setCategoryNumber("");
-        employeeCategoryPatchDto.setCategoryAssignmentDate(null);
+        employeeCategoryDto.setCategoryNumber("");
+        employeeCategoryDto.setCategoryAssignmentDate(null);
 
-        Set<ConstraintViolation<EmployeeCategoryPatchDto>> violations = validator.validate(employeeCategoryPatchDto);
+        Set<ConstraintViolation<EmployeeCategoryDto>> violations = validator.validate(employeeCategoryDto);
 
         assertEquals(2, violations.size());
     }
 
     @Test
     public void When_CategoryNumberIsBlank_And_CategoryAssignmentDateIsNull_And_CategoryIsNone_Then_ViolationsEmpty() {
-        employeeCategoryPatchDto.setCategory(Category.NONE);
-        employeeCategoryPatchDto.setCategoryNumber("");
-        employeeCategoryPatchDto.setCategoryAssignmentDate(null);
+        employeeCategoryDto.setCategory(Category.NONE);
+        employeeCategoryDto.setCategoryNumber("");
+        employeeCategoryDto.setCategoryAssignmentDate(null);
 
-        Set<ConstraintViolation<EmployeeCategoryPatchDto>> violations = validator.validate(employeeCategoryPatchDto);
+        Set<ConstraintViolation<EmployeeCategoryDto>> violations = validator.validate(employeeCategoryDto);
 
         assertTrue(violations.isEmpty());
     }
 
     @Test
     public void When_EverythingIsNull_Should_ThrowConstraintViolationException() {
-        employeeCategoryPatchDto.setCategory(null);
-        employeeCategoryPatchDto.setQualification(null);
-        employeeCategoryPatchDto.setCategoryNumber(null);
-        employeeCategoryPatchDto.setCategoryAssignmentDate(null);
+        employeeCategoryDto.setCategory(null);
+        employeeCategoryDto.setQualification(null);
+        employeeCategoryDto.setCategoryNumber(null);
+        employeeCategoryDto.setCategoryAssignmentDate(null);
 
-        Set<ConstraintViolation<EmployeeCategoryPatchDto>> violations = validator.validate(employeeCategoryPatchDto);
+        Set<ConstraintViolation<EmployeeCategoryDto>> violations = validator.validate(employeeCategoryDto);
 
         assertEquals(4, violations.size());
     }

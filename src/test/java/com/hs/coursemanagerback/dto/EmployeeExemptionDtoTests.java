@@ -1,6 +1,6 @@
 package com.hs.coursemanagerback.dto;
 
-import com.hs.coursemanagerback.model.employee.dto.EmployeeExemptionPatchDto;
+import com.hs.coursemanagerback.model.employee.dto.EmployeeExemptionDto;
 import com.hs.coursemanagerback.model.enumeration.Exemption;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,56 +20,56 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /// Unit tests
 @SpringBootTest
 @ActiveProfiles("test")
-public class EmployeeExemptionPatchDtoTests {
+public class EmployeeExemptionDtoTests {
 
     @Autowired
     Validator validator;
 
-    private EmployeeExemptionPatchDto employeeExemptionPatchDto;
+    private EmployeeExemptionDto employeeExemptionDto;
 
     @BeforeEach
     public void before() {
-        employeeExemptionPatchDto = new EmployeeExemptionPatchDto();
-        employeeExemptionPatchDto.setExemption(Exemption.LESS_THAN_YEAR_WORK);
-        employeeExemptionPatchDto.setExemptionStartDate(LocalDate.of(2020, 5, 5));
-        employeeExemptionPatchDto.setExemptionEndDate(LocalDate.of(2020, 6, 6));
+        employeeExemptionDto = new EmployeeExemptionDto();
+        employeeExemptionDto.setExemption(Exemption.LESS_THAN_YEAR_WORK);
+        employeeExemptionDto.setExemptionStartDate(LocalDate.of(2020, 5, 5));
+        employeeExemptionDto.setExemptionEndDate(LocalDate.of(2020, 6, 6));
     }
 
     @AfterEach
     public void after() {
-        employeeExemptionPatchDto = null;
+        employeeExemptionDto = null;
     }
 
     @Test
     public void When_Valid_Then_ViolationsEmpty() {
-        Set<ConstraintViolation<EmployeeExemptionPatchDto>> violations = validator.validate(employeeExemptionPatchDto);
+        Set<ConstraintViolation<EmployeeExemptionDto>> violations = validator.validate(employeeExemptionDto);
 
         assertTrue(violations.isEmpty());
     }
 
     @Test
     public void When_ExemptionIsNull_Should_ThrowConstraintViolationException() {
-        employeeExemptionPatchDto.setExemption(null);
+        employeeExemptionDto.setExemption(null);
 
-        Set<ConstraintViolation<EmployeeExemptionPatchDto>> violations = validator.validate(employeeExemptionPatchDto);
+        Set<ConstraintViolation<EmployeeExemptionDto>> violations = validator.validate(employeeExemptionDto);
 
         assertEquals("ExemptionNotNull constraint violation", violations.iterator().next().getMessage());
     }
 
     @Test
     public void When_StartDateIsNull_Should_ThrowConstraintViolationException() {
-        employeeExemptionPatchDto.setExemptionStartDate(null);
+        employeeExemptionDto.setExemptionStartDate(null);
 
-        Set<ConstraintViolation<EmployeeExemptionPatchDto>> violations = validator.validate(employeeExemptionPatchDto);
+        Set<ConstraintViolation<EmployeeExemptionDto>> violations = validator.validate(employeeExemptionDto);
 
         assertEquals("ExemptionNotNull constraint violation", violations.iterator().next().getMessage());
     }
 
     @Test
     public void When_EndDateIsNull_Then_ViolationsEmpty() {
-        employeeExemptionPatchDto.setExemptionEndDate(null);
+        employeeExemptionDto.setExemptionEndDate(null);
 
-        Set<ConstraintViolation<EmployeeExemptionPatchDto>> violations = validator.validate(employeeExemptionPatchDto);
+        Set<ConstraintViolation<EmployeeExemptionDto>> violations = validator.validate(employeeExemptionDto);
 
         assertTrue(violations.isEmpty());
     }

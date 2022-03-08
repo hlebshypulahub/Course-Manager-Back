@@ -59,19 +59,21 @@ public class EmployeeDataService {
 
     private void patch(Employee employee, EmployeePatchDto employeePatchDto) {
         if (!employee.isExemptioned()) {
-            if (employeePatchDto instanceof EmployeeCategoryPatchDto) {
+            if (employeePatchDto instanceof EmployeeCategoryDto) {
                 patchCategory(employee, employeePatchDto);
-            } else if (employeePatchDto instanceof EmployeeCategoryDeadlinePatchDto) {
+            } else if (employeePatchDto instanceof EmployeeCategoryDeadlineDto) {
                 patchCategoryDeadline(employee, employeePatchDto);
             }
         }
 
-        if (employeePatchDto instanceof EmployeeExemptionPatchDto) {
+        if (employeePatchDto instanceof EmployeeExemptionDto) {
             patchEmployeeExemption(employee, employeePatchDto);
-        } else if (employeePatchDto instanceof EmployeeEducationPatchDto) {
+        } else if (employeePatchDto instanceof EmployeeEducationDto) {
             patchEmployeeEducation(employee, employeePatchDto);
-        } else if (employeePatchDto instanceof EmployeeActivePatchDto) {
+        } else if (employeePatchDto instanceof EmployeeActiveDto) {
             patchEmployeeActive(employee, employeePatchDto);
+        } else if (employeePatchDto instanceof EmployeeNoteDto) {
+            patchEmployeeNote(employee, employeePatchDto);
         }
     }
 
@@ -102,6 +104,10 @@ public class EmployeeDataService {
     }
 
     private void patchEmployeeEducation(Employee employee, EmployeePatchDto employeePatchDto) {
+        BeanUtils.copyProperties(employeePatchDto, employee);
+    }
+
+    private void patchEmployeeNote(Employee employee, EmployeePatchDto employeePatchDto) {
         BeanUtils.copyProperties(employeePatchDto, employee);
     }
 

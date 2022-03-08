@@ -2,7 +2,7 @@ package com.hs.coursemanagerback.model.documents;
 
 import com.hs.coursemanagerback.model.enumeration.Category;
 
-public class RepresentationDto {
+public class RepresentationDto extends DocumentDto {
 
     private String overallWorkExperience;
     private String lastPositionWorkExperience;

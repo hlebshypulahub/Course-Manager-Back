@@ -4,7 +4,7 @@ import com.hs.coursemanagerback.model.enumeration.Category;
 
 import java.util.List;
 
-public class QualificationSheetDto {
+public class QualificationSheetDto extends DocumentDto {
 
     private Category category;
     private String qualification;

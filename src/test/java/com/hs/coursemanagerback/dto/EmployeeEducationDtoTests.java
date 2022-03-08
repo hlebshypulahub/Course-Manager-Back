@@ -1,6 +1,6 @@
 package com.hs.coursemanagerback.dto;
 
-import com.hs.coursemanagerback.model.employee.dto.EmployeeEducationPatchDto;
+import com.hs.coursemanagerback.model.employee.dto.EmployeeEducationDto;
 import com.hs.coursemanagerback.model.enumeration.Education;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,67 +20,67 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /// Unit tests
 @SpringBootTest
 @ActiveProfiles("test")
-public class EmployeeEducationPatchDtoTests {
+public class EmployeeEducationDtoTests {
 
     @Autowired
     Validator validator;
 
-    private EmployeeEducationPatchDto employeeEducationPatchDto;
+    private EmployeeEducationDto employeeEducationDto;
 
     @BeforeEach
     public void before() {
-        employeeEducationPatchDto = new EmployeeEducationPatchDto();
-        employeeEducationPatchDto.setEducation(Education.HIGHER);
-        employeeEducationPatchDto.setEduName("AGH");
-        employeeEducationPatchDto.setEduGraduationDate(LocalDate.of(2020, 5, 5));
+        employeeEducationDto = new EmployeeEducationDto();
+        employeeEducationDto.setEducation(Education.HIGHER);
+        employeeEducationDto.setEduName("AGH");
+        employeeEducationDto.setEduGraduationDate(LocalDate.of(2020, 5, 5));
     }
 
     @AfterEach
     public void after() {
-        employeeEducationPatchDto = null;
+        employeeEducationDto = null;
     }
 
     @Test
     public void When_Valid_Then_ViolationsEmpty() {
-        Set<ConstraintViolation<EmployeeEducationPatchDto>> violations = validator.validate(employeeEducationPatchDto);
+        Set<ConstraintViolation<EmployeeEducationDto>> violations = validator.validate(employeeEducationDto);
 
         assertTrue(violations.isEmpty());
     }
 
     @Test
     public void When_EducationIsNull_Should_ThrowConstraintViolationException() {
-        employeeEducationPatchDto.setEducation(null);
+        employeeEducationDto.setEducation(null);
 
-        Set<ConstraintViolation<EmployeeEducationPatchDto>> violations = validator.validate(employeeEducationPatchDto);
+        Set<ConstraintViolation<EmployeeEducationDto>> violations = validator.validate(employeeEducationDto);
 
         assertEquals("Education cannot be null", violations.iterator().next().getMessage());
     }
 
     @Test
     public void When_EduNameIsBlank_Should_ThrowConstraintViolationException() {
-        employeeEducationPatchDto.setEduName("  ");
+        employeeEducationDto.setEduName("  ");
 
-        Set<ConstraintViolation<EmployeeEducationPatchDto>> violations = validator.validate(employeeEducationPatchDto);
+        Set<ConstraintViolation<EmployeeEducationDto>> violations = validator.validate(employeeEducationDto);
 
         assertEquals("Education name cannot be blank", violations.iterator().next().getMessage());
     }
 
     @Test
     public void When_EduGraduationDateIsNull_Should_ThrowConstraintViolationException() {
-        employeeEducationPatchDto.setEduGraduationDate(null);
+        employeeEducationDto.setEduGraduationDate(null);
 
-        Set<ConstraintViolation<EmployeeEducationPatchDto>> violations = validator.validate(employeeEducationPatchDto);
+        Set<ConstraintViolation<EmployeeEducationDto>> violations = validator.validate(employeeEducationDto);
 
         assertEquals("Education graduation date cannot be empty", violations.iterator().next().getMessage());
     }
 
     @Test
     public void When_EverythingIsNullOrBlank_Should_ThrowConstraintViolationException() {
-        employeeEducationPatchDto.setEducation(null);
-        employeeEducationPatchDto.setEduGraduationDate(null);
-        employeeEducationPatchDto.setEduName("  ");
+        employeeEducationDto.setEducation(null);
+        employeeEducationDto.setEduGraduationDate(null);
+        employeeEducationDto.setEduName("  ");
 
-        Set<ConstraintViolation<EmployeeEducationPatchDto>> violations = validator.validate(employeeEducationPatchDto);
+        Set<ConstraintViolation<EmployeeEducationDto>> violations = validator.validate(employeeEducationDto);
 
         assertEquals(3, violations.size());
     }

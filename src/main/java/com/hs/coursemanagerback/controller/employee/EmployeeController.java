@@ -1,5 +1,6 @@
 package com.hs.coursemanagerback.controller.employee;
 
+import com.hs.coursemanagerback.model.documents.DocumentDto;
 import com.hs.coursemanagerback.model.documents.ProfessionalReportDto;
 import com.hs.coursemanagerback.model.documents.QualificationSheetDto;
 import com.hs.coursemanagerback.model.documents.RepresentationDto;
@@ -50,61 +51,52 @@ public class EmployeeController {
     }
 
     @PostMapping(path = "/{id}/education", consumes = "application/json")
-    public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeEducationPatchDto employeeEducationPatchDto) {
-        return ResponseEntity.ok(employeeDataService.patch(id, employeeEducationPatchDto));
+    public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeEducationDto employeeEducationDto) {
+        return ResponseEntity.ok(employeeDataService.patch(id, employeeEducationDto));
     }
 
     @PostMapping(path = "/{id}/category", consumes = "application/json")
-    public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeCategoryPatchDto employeeCategoryPatchDto) {
-        return ResponseEntity.ok(employeeDataService.patch(id, employeeCategoryPatchDto));
+    public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeCategoryDto employeeCategoryDto) {
+        return ResponseEntity.ok(employeeDataService.patch(id, employeeCategoryDto));
     }
 
     @PostMapping(path = "/{id}/category-deadline", consumes = "application/json")
-    public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeCategoryDeadlinePatchDto employeeCategoryDeadlinePatchDto) {
-        return ResponseEntity.ok(employeeDataService.patch(id, employeeCategoryDeadlinePatchDto));
+    public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeCategoryDeadlineDto employeeCategoryDeadlineDto) {
+        return ResponseEntity.ok(employeeDataService.patch(id, employeeCategoryDeadlineDto));
     }
 
     @PostMapping(path = "/{id}/active", consumes = "application/json")
-    public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeActivePatchDto employeeActivePatchDto) {
-        return ResponseEntity.ok(employeeDataService.patch(id, employeeActivePatchDto));
+    public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeActiveDto employeeActiveDto) {
+        return ResponseEntity.ok(employeeDataService.patch(id, employeeActiveDto));
     }
 
     @PostMapping(path = "/{id}/exemption", consumes = "application/json")
-    public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeExemptionPatchDto employeeExemptionPatchDto) {
-        return ResponseEntity.ok(employeeDataService.patch(id, employeeExemptionPatchDto));
+    public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeExemptionDto employeeExemptionDto) {
+        return ResponseEntity.ok(employeeDataService.patch(id, employeeExemptionDto));
+    }
+
+    @PostMapping(path = "/{id}/note", consumes = "application/json")
+    public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeNoteDto employeeNoteDto) {
+        return ResponseEntity.ok(employeeDataService.patch(id, employeeNoteDto));
     }
 
     @PostMapping(value = "/{id}/documents/representation", produces = MediaType.TEXT_HTML_VALUE)
-    public ResponseEntity<byte[]> getDocument(@PathVariable(name = "id") Long employeeId, @RequestBody RepresentationDto representationDto) {
-        ByteArrayInputStream bis = employeeDocumentService.generateDocument(employeeId, representationDto);
-
-        byte[] byteArray = bis.readAllBytes();
-
-        var headers = new HttpHeaders();
-        headers.setContentType(MediaType.valueOf(MediaType.TEXT_HTML_VALUE));
-        headers.setContentLength(byteArray.length);
-        headers.add("Content-Disposition", "inline; filename=document.html");
-
-        return new ResponseEntity<>(byteArray, headers, HttpStatus.OK);
+    public ResponseEntity<byte[]> getRepresentation(@PathVariable(name = "id") Long employeeId, @RequestBody RepresentationDto representationDto) {
+        return getDocument(employeeId, representationDto);
     }
 
     @PostMapping(value = "/{id}/documents/qualification-sheet", produces = MediaType.TEXT_HTML_VALUE)
-    public ResponseEntity<byte[]> getDocument(@PathVariable(name = "id") Long employeeId, @RequestBody QualificationSheetDto qualificationSheetDto) {
-        ByteArrayInputStream bis = employeeDocumentService.generateDocument(employeeId, qualificationSheetDto);
-
-        byte[] byteArray = bis.readAllBytes();
-
-        var headers = new HttpHeaders();
-        headers.setContentType(MediaType.valueOf(MediaType.TEXT_HTML_VALUE));
-        headers.setContentLength(byteArray.length);
-        headers.add("Content-Disposition", "inline; filename=document.html");
-
-        return new ResponseEntity<>(byteArray, headers, HttpStatus.OK);
+    public ResponseEntity<byte[]> getQualificationSheet(@PathVariable(name = "id") Long employeeId, @RequestBody QualificationSheetDto qualificationSheetDto) {
+        return getDocument(employeeId, qualificationSheetDto);
     }
 
     @PostMapping(value = "/{id}/documents/professional-report", produces = MediaType.TEXT_HTML_VALUE)
-    public ResponseEntity<byte[]> getDocument(@PathVariable(name = "id") Long employeeId, @RequestBody ProfessionalReportDto professionalReportDto) {
-        ByteArrayInputStream bis = employeeDocumentService.generateDocument(employeeId, professionalReportDto);
+    public ResponseEntity<byte[]> getProfessionalReport(@PathVariable(name = "id") Long employeeId, @RequestBody ProfessionalReportDto professionalReportDto) {
+        return getDocument(employeeId, professionalReportDto);
+    }
+
+    private ResponseEntity<byte[]> getDocument(Long employeeId, DocumentDto documentDto) {
+        ByteArrayInputStream bis = employeeDocumentService.generateDocument(employeeId, documentDto);
 
         byte[] byteArray = bis.readAllBytes();
 

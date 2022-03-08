@@ -3,10 +3,10 @@ package com.hs.coursemanagerback.employee;
 import com.hs.coursemanagerback.exception.CategoryNotValidException;
 import com.hs.coursemanagerback.exception.EducationNotValidException;
 import com.hs.coursemanagerback.model.employee.Employee;
-import com.hs.coursemanagerback.model.employee.dto.EmployeeCategoryDeadlinePatchDto;
-import com.hs.coursemanagerback.model.employee.dto.EmployeeCategoryPatchDto;
-import com.hs.coursemanagerback.model.employee.dto.EmployeeEducationPatchDto;
-import com.hs.coursemanagerback.model.employee.dto.EmployeeExemptionPatchDto;
+import com.hs.coursemanagerback.model.employee.dto.EmployeeCategoryDeadlineDto;
+import com.hs.coursemanagerback.model.employee.dto.EmployeeCategoryDto;
+import com.hs.coursemanagerback.model.employee.dto.EmployeeEducationDto;
+import com.hs.coursemanagerback.model.employee.dto.EmployeeExemptionDto;
 import com.hs.coursemanagerback.model.enumeration.Category;
 import com.hs.coursemanagerback.model.enumeration.Education;
 import com.hs.coursemanagerback.model.enumeration.Exemption;
@@ -182,19 +182,19 @@ public class EmployeeDataServiceIntegrationTests {
 
     @Test
     public void Should_PatchCategory_When_EmployeeNotExemptioned_AndEducationIsValid() {
-        EmployeeCategoryPatchDto employeeCategoryPatchDto = new EmployeeCategoryPatchDto();
-        employeeCategoryPatchDto.setCategory(Category.FIRST);
-        employeeCategoryPatchDto.setCategoryNumber("228");
-        employeeCategoryPatchDto.setCategoryAssignmentDate(LocalDate.of(2020, 5, 5));
-        employeeCategoryPatchDto.setQualification("Farmaceuta");
+        EmployeeCategoryDto employeeCategoryDto = new EmployeeCategoryDto();
+        employeeCategoryDto.setCategory(Category.FIRST);
+        employeeCategoryDto.setCategoryNumber("228");
+        employeeCategoryDto.setCategoryAssignmentDate(LocalDate.of(2020, 5, 5));
+        employeeCategoryDto.setQualification("Farmaceuta");
 
-        EmployeeEducationPatchDto employeeEducationPatchDto = new EmployeeEducationPatchDto();
-        employeeEducationPatchDto.setEducation(Education.HIGHER);
-        employeeEducationPatchDto.setEduName("AGH");
-        employeeEducationPatchDto.setEduGraduationDate(LocalDate.of(2020, 5, 5));
+        EmployeeEducationDto employeeEducationDto = new EmployeeEducationDto();
+        employeeEducationDto.setEducation(Education.HIGHER);
+        employeeEducationDto.setEduName("AGH");
+        employeeEducationDto.setEduGraduationDate(LocalDate.of(2020, 5, 5));
 
-        BeanUtils.copyProperties(employeeEducationPatchDto, employee);
-        BeanUtils.copyProperties(employeeCategoryPatchDto, employee);
+        BeanUtils.copyProperties(employeeEducationDto, employee);
+        BeanUtils.copyProperties(employeeCategoryDto, employee);
 
         employee.setCategoryAssignmentDeadlineDate(LocalDate.of(2020, 5, 5));
         employee.setDocsSubmitDeadlineDate(LocalDate.of(2020, 5, 5));
@@ -202,7 +202,7 @@ public class EmployeeDataServiceIntegrationTests {
 
         employee = employeeDataService.save(employee);
 
-        Employee newEmployee = employeeDataService.patch(employee.getId(), employeeCategoryPatchDto);
+        Employee newEmployee = employeeDataService.patch(employee.getId(), employeeCategoryDto);
 
         assertNotNull(newEmployee);
         assertEquals(Category.FIRST, newEmployee.getCategory());
@@ -210,12 +210,12 @@ public class EmployeeDataServiceIntegrationTests {
 
     @Test
     public void Should_PatchCategory_When_EmployeeNotExemptioned_AndEducationNotValid() {
-        EmployeeCategoryPatchDto employeeCategoryPatchDto = new EmployeeCategoryPatchDto();
+        EmployeeCategoryDto employeeCategoryDto = new EmployeeCategoryDto();
 
         employee = employeeDataService.save(employee);
 
         EducationNotValidException exception = assertThrows(EducationNotValidException.class, () -> {
-            employeeDataService.patch(employee.getId(), employeeCategoryPatchDto);
+            employeeDataService.patch(employee.getId(), employeeCategoryDto);
         });
 
         assertEquals("Education is not valid to add category", exception.getMessage());
@@ -223,21 +223,21 @@ public class EmployeeDataServiceIntegrationTests {
 
     @Test
     public void Should_NotPatchCategory_When_EmployeeIsExemptioned_AndEducationIsValid() {
-        EmployeeCategoryPatchDto employeeCategoryPatchDto = new EmployeeCategoryPatchDto();
-        employeeCategoryPatchDto.setCategory(Category.FIRST);
+        EmployeeCategoryDto employeeCategoryDto = new EmployeeCategoryDto();
+        employeeCategoryDto.setCategory(Category.FIRST);
 
-        EmployeeEducationPatchDto employeeEducationPatchDto = new EmployeeEducationPatchDto();
-        employeeEducationPatchDto.setEducation(Education.HIGHER);
-        employeeEducationPatchDto.setEduName("AGH");
-        employeeEducationPatchDto.setEduGraduationDate(LocalDate.of(2020, 5, 5));
+        EmployeeEducationDto employeeEducationDto = new EmployeeEducationDto();
+        employeeEducationDto.setEducation(Education.HIGHER);
+        employeeEducationDto.setEduName("AGH");
+        employeeEducationDto.setEduGraduationDate(LocalDate.of(2020, 5, 5));
 
-        BeanUtils.copyProperties(employeeEducationPatchDto, employee);
+        BeanUtils.copyProperties(employeeEducationDto, employee);
 
         employee.setExemptioned(true);
 
         employee = employeeDataService.save(employee);
 
-        Employee newEmployee = employeeDataService.patch(employee.getId(), employeeCategoryPatchDto);
+        Employee newEmployee = employeeDataService.patch(employee.getId(), employeeCategoryDto);
 
         assertNotNull(newEmployee);
         assertNull(newEmployee.getCategory());
@@ -247,22 +247,22 @@ public class EmployeeDataServiceIntegrationTests {
     public void Should_PatchCategoryDeadline_When_EmployeeNotExemptioned_AndCategoryIsValid() {
         LocalDate date = LocalDate.of(2020, 5, 5);
 
-        EmployeeCategoryDeadlinePatchDto employeeCategoryDeadlinePatchDto = new EmployeeCategoryDeadlinePatchDto();
-        employeeCategoryDeadlinePatchDto.setCategoryAssignmentDeadlineDate(date);
+        EmployeeCategoryDeadlineDto employeeCategoryDeadlineDto = new EmployeeCategoryDeadlineDto();
+        employeeCategoryDeadlineDto.setCategoryAssignmentDeadlineDate(date);
 
-        EmployeeEducationPatchDto employeeEducationPatchDto = new EmployeeEducationPatchDto();
-        employeeEducationPatchDto.setEducation(Education.HIGHER);
-        employeeEducationPatchDto.setEduName("AGH");
-        employeeEducationPatchDto.setEduGraduationDate(LocalDate.of(2020, 5, 5));
+        EmployeeEducationDto employeeEducationDto = new EmployeeEducationDto();
+        employeeEducationDto.setEducation(Education.HIGHER);
+        employeeEducationDto.setEduName("AGH");
+        employeeEducationDto.setEduGraduationDate(LocalDate.of(2020, 5, 5));
 
-        EmployeeCategoryPatchDto employeeCategoryPatchDto = new EmployeeCategoryPatchDto();
-        employeeCategoryPatchDto.setCategory(Category.FIRST);
-        employeeCategoryPatchDto.setCategoryNumber("228");
-        employeeCategoryPatchDto.setCategoryAssignmentDate(LocalDate.of(2020, 5, 5));
-        employeeCategoryPatchDto.setQualification("Farmaceuta");
+        EmployeeCategoryDto employeeCategoryDto = new EmployeeCategoryDto();
+        employeeCategoryDto.setCategory(Category.FIRST);
+        employeeCategoryDto.setCategoryNumber("228");
+        employeeCategoryDto.setCategoryAssignmentDate(LocalDate.of(2020, 5, 5));
+        employeeCategoryDto.setQualification("Farmaceuta");
 
-        BeanUtils.copyProperties(employeeEducationPatchDto, employee);
-        BeanUtils.copyProperties(employeeCategoryPatchDto, employee);
+        BeanUtils.copyProperties(employeeEducationDto, employee);
+        BeanUtils.copyProperties(employeeCategoryDto, employee);
 
         employee.setCategoryAssignmentDeadlineDate(LocalDate.of(2020, 5, 5));
         employee.setDocsSubmitDeadlineDate(LocalDate.of(2020, 5, 5));
@@ -270,7 +270,7 @@ public class EmployeeDataServiceIntegrationTests {
 
         employee = employeeDataService.save(employee);
 
-        Employee newEmployee = employeeDataService.patch(employee.getId(), employeeCategoryDeadlinePatchDto);
+        Employee newEmployee = employeeDataService.patch(employee.getId(), employeeCategoryDeadlineDto);
 
         assertNotNull(newEmployee);
         assertEquals(date, newEmployee.getCategoryAssignmentDeadlineDate());
@@ -280,22 +280,22 @@ public class EmployeeDataServiceIntegrationTests {
     public void Should_NotPatchCategoryDeadline_When_EmployeeNotExemptioned_AndCategoryNotValid() {
         LocalDate date = LocalDate.of(2020, 5, 5);
 
-        EmployeeCategoryDeadlinePatchDto employeeCategoryDeadlinePatchDto = new EmployeeCategoryDeadlinePatchDto();
-        employeeCategoryDeadlinePatchDto.setCategoryAssignmentDeadlineDate(date);
+        EmployeeCategoryDeadlineDto employeeCategoryDeadlineDto = new EmployeeCategoryDeadlineDto();
+        employeeCategoryDeadlineDto.setCategoryAssignmentDeadlineDate(date);
 
-        EmployeeEducationPatchDto employeeEducationPatchDto = new EmployeeEducationPatchDto();
-        employeeEducationPatchDto.setEducation(Education.HIGHER);
-        employeeEducationPatchDto.setEduName("AGH");
-        employeeEducationPatchDto.setEduGraduationDate(LocalDate.of(2020, 5, 5));
+        EmployeeEducationDto employeeEducationDto = new EmployeeEducationDto();
+        employeeEducationDto.setEducation(Education.HIGHER);
+        employeeEducationDto.setEduName("AGH");
+        employeeEducationDto.setEduGraduationDate(LocalDate.of(2020, 5, 5));
 
-        EmployeeCategoryPatchDto employeeCategoryPatchDto = new EmployeeCategoryPatchDto();
-        employeeCategoryPatchDto.setCategory(Category.FIRST);
+        EmployeeCategoryDto employeeCategoryDto = new EmployeeCategoryDto();
+        employeeCategoryDto.setCategory(Category.FIRST);
 //        employeeCategoryPatchDto.setCategoryNumber("228");
-        employeeCategoryPatchDto.setCategoryAssignmentDate(LocalDate.of(2020, 5, 5));
-        employeeCategoryPatchDto.setQualification("Farmaceuta");
+        employeeCategoryDto.setCategoryAssignmentDate(LocalDate.of(2020, 5, 5));
+        employeeCategoryDto.setQualification("Farmaceuta");
 
-        BeanUtils.copyProperties(employeeEducationPatchDto, employee);
-        BeanUtils.copyProperties(employeeCategoryPatchDto, employee);
+        BeanUtils.copyProperties(employeeEducationDto, employee);
+        BeanUtils.copyProperties(employeeCategoryDto, employee);
 
         employee.setCategoryAssignmentDeadlineDate(LocalDate.of(2020, 5, 5));
         employee.setDocsSubmitDeadlineDate(LocalDate.of(2020, 5, 5));
@@ -304,7 +304,7 @@ public class EmployeeDataServiceIntegrationTests {
         employee = employeeDataService.save(employee);
 
         CategoryNotValidException exception = assertThrows(CategoryNotValidException.class, () -> {
-            employeeDataService.patch(employee.getId(), employeeCategoryDeadlinePatchDto);
+            employeeDataService.patch(employee.getId(), employeeCategoryDeadlineDto);
         });
 
         assertEquals("Category is not valid to edit assignment deadline date", exception.getMessage());
@@ -312,17 +312,17 @@ public class EmployeeDataServiceIntegrationTests {
 
     @Test
     public void Should_PatchExemptionWithEndDateIsNull_When_CategoryIsValid() {
-        EmployeeExemptionPatchDto employeeExemptionPatchDto = new EmployeeExemptionPatchDto();
-        employeeExemptionPatchDto.setExemption(Exemption.LESS_THAN_YEAR_WORK);
-        employeeExemptionPatchDto.setExemptionStartDate(LocalDate.of(2020, 5, 5));
+        EmployeeExemptionDto employeeExemptionDto = new EmployeeExemptionDto();
+        employeeExemptionDto.setExemption(Exemption.LESS_THAN_YEAR_WORK);
+        employeeExemptionDto.setExemptionStartDate(LocalDate.of(2020, 5, 5));
 
-        EmployeeCategoryPatchDto employeeCategoryPatchDto = new EmployeeCategoryPatchDto();
-        employeeCategoryPatchDto.setCategory(Category.FIRST);
-        employeeCategoryPatchDto.setCategoryNumber("228");
-        employeeCategoryPatchDto.setCategoryAssignmentDate(LocalDate.of(2020, 5, 5));
-        employeeCategoryPatchDto.setQualification("Farmaceuta");
+        EmployeeCategoryDto employeeCategoryDto = new EmployeeCategoryDto();
+        employeeCategoryDto.setCategory(Category.FIRST);
+        employeeCategoryDto.setCategoryNumber("228");
+        employeeCategoryDto.setCategoryAssignmentDate(LocalDate.of(2020, 5, 5));
+        employeeCategoryDto.setQualification("Farmaceuta");
 
-        BeanUtils.copyProperties(employeeCategoryPatchDto, employee);
+        BeanUtils.copyProperties(employeeCategoryDto, employee);
 
         employee.setCategoryAssignmentDeadlineDate(LocalDate.of(2020, 5, 5));
         employee.setDocsSubmitDeadlineDate(LocalDate.of(2020, 5, 5));
@@ -330,7 +330,7 @@ public class EmployeeDataServiceIntegrationTests {
 
         employee = employeeDataService.save(employee);
 
-        Employee newEmployee = employeeDataService.patch(employee.getId(), employeeExemptionPatchDto);
+        Employee newEmployee = employeeDataService.patch(employee.getId(), employeeExemptionDto);
 
         assertNotNull(newEmployee);
         assertEquals(Exemption.LESS_THAN_YEAR_WORK, newEmployee.getExemption());
@@ -338,18 +338,18 @@ public class EmployeeDataServiceIntegrationTests {
 
     @Test
     public void Should_PatchExemptionWithEndDateNotNull_When_CategoryIsValid() {
-        EmployeeExemptionPatchDto employeeExemptionPatchDto = new EmployeeExemptionPatchDto();
-        employeeExemptionPatchDto.setExemption(Exemption.LESS_THAN_YEAR_WORK);
-        employeeExemptionPatchDto.setExemptionStartDate(LocalDate.of(2020, 5, 5));
-        employeeExemptionPatchDto.setExemptionEndDate(LocalDate.of(2021, 5, 5));
+        EmployeeExemptionDto employeeExemptionDto = new EmployeeExemptionDto();
+        employeeExemptionDto.setExemption(Exemption.LESS_THAN_YEAR_WORK);
+        employeeExemptionDto.setExemptionStartDate(LocalDate.of(2020, 5, 5));
+        employeeExemptionDto.setExemptionEndDate(LocalDate.of(2021, 5, 5));
 
-        EmployeeCategoryPatchDto employeeCategoryPatchDto = new EmployeeCategoryPatchDto();
-        employeeCategoryPatchDto.setCategory(Category.FIRST);
-        employeeCategoryPatchDto.setCategoryNumber("228");
-        employeeCategoryPatchDto.setCategoryAssignmentDate(LocalDate.of(2020, 5, 5));
-        employeeCategoryPatchDto.setQualification("Farmaceuta");
+        EmployeeCategoryDto employeeCategoryDto = new EmployeeCategoryDto();
+        employeeCategoryDto.setCategory(Category.FIRST);
+        employeeCategoryDto.setCategoryNumber("228");
+        employeeCategoryDto.setCategoryAssignmentDate(LocalDate.of(2020, 5, 5));
+        employeeCategoryDto.setQualification("Farmaceuta");
 
-        BeanUtils.copyProperties(employeeCategoryPatchDto, employee);
+        BeanUtils.copyProperties(employeeCategoryDto, employee);
 
         employee.setCategoryAssignmentDeadlineDate(LocalDate.of(2020, 5, 5));
         employee.setDocsSubmitDeadlineDate(LocalDate.of(2020, 5, 5));
@@ -357,7 +357,7 @@ public class EmployeeDataServiceIntegrationTests {
 
         employee = employeeDataService.save(employee);
 
-        Employee newEmployee = employeeDataService.patch(employee.getId(), employeeExemptionPatchDto);
+        Employee newEmployee = employeeDataService.patch(employee.getId(), employeeExemptionDto);
 
         assertNotNull(newEmployee);
         assertNull(newEmployee.getExemption());
@@ -365,18 +365,18 @@ public class EmployeeDataServiceIntegrationTests {
 
     @Test
     public void Should_NotPatchExemptionWithEndDateNotNull_When_CategoryNotValid() {
-        EmployeeExemptionPatchDto employeeExemptionPatchDto = new EmployeeExemptionPatchDto();
-        employeeExemptionPatchDto.setExemption(Exemption.LESS_THAN_YEAR_WORK);
-        employeeExemptionPatchDto.setExemptionStartDate(LocalDate.of(2020, 5, 5));
-        employeeExemptionPatchDto.setExemptionEndDate(LocalDate.of(2021, 5, 5));
+        EmployeeExemptionDto employeeExemptionDto = new EmployeeExemptionDto();
+        employeeExemptionDto.setExemption(Exemption.LESS_THAN_YEAR_WORK);
+        employeeExemptionDto.setExemptionStartDate(LocalDate.of(2020, 5, 5));
+        employeeExemptionDto.setExemptionEndDate(LocalDate.of(2021, 5, 5));
 
-        EmployeeCategoryPatchDto employeeCategoryPatchDto = new EmployeeCategoryPatchDto();
-        employeeCategoryPatchDto.setCategory(Category.FIRST);
+        EmployeeCategoryDto employeeCategoryDto = new EmployeeCategoryDto();
+        employeeCategoryDto.setCategory(Category.FIRST);
 //        employeeCategoryPatchDto.setCategoryNumber("228");
-        employeeCategoryPatchDto.setCategoryAssignmentDate(LocalDate.of(2020, 5, 5));
-        employeeCategoryPatchDto.setQualification("Farmaceuta");
+        employeeCategoryDto.setCategoryAssignmentDate(LocalDate.of(2020, 5, 5));
+        employeeCategoryDto.setQualification("Farmaceuta");
 
-        BeanUtils.copyProperties(employeeCategoryPatchDto, employee);
+        BeanUtils.copyProperties(employeeCategoryDto, employee);
 
         employee.setCategoryAssignmentDeadlineDate(LocalDate.of(2020, 5, 5));
         employee.setDocsSubmitDeadlineDate(LocalDate.of(2020, 5, 5));
@@ -385,7 +385,7 @@ public class EmployeeDataServiceIntegrationTests {
         employee = employeeDataService.save(employee);
 
         CategoryNotValidException exception = assertThrows(CategoryNotValidException.class, () -> {
-            employeeDataService.patch(employee.getId(), employeeExemptionPatchDto);
+            employeeDataService.patch(employee.getId(), employeeExemptionDto);
         });
 
         assertEquals("Category is not valid to add exemption", exception.getMessage());
@@ -393,14 +393,14 @@ public class EmployeeDataServiceIntegrationTests {
 
     @Test
     public void Should_PatchEducation() {
-        EmployeeEducationPatchDto employeeEducationPatchDto = new EmployeeEducationPatchDto();
-        employeeEducationPatchDto.setEducation(Education.HIGHER);
-        employeeEducationPatchDto.setEduName("AGH");
-        employeeEducationPatchDto.setEduGraduationDate(LocalDate.of(2020, 5, 5));
+        EmployeeEducationDto employeeEducationDto = new EmployeeEducationDto();
+        employeeEducationDto.setEducation(Education.HIGHER);
+        employeeEducationDto.setEduName("AGH");
+        employeeEducationDto.setEduGraduationDate(LocalDate.of(2020, 5, 5));
 
         employee = employeeDataService.save(employee);
 
-        Employee newEmployee = employeeDataService.patch(employee.getId(), employeeEducationPatchDto);
+        Employee newEmployee = employeeDataService.patch(employee.getId(), employeeEducationDto);
 
         assertNotNull(newEmployee);
         assertEquals(Education.HIGHER, newEmployee.getEducation());

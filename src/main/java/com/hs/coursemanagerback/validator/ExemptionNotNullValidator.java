@@ -1,22 +1,22 @@
 package com.hs.coursemanagerback.validator;
 
-import com.hs.coursemanagerback.model.employee.dto.EmployeeExemptionPatchDto;
+import com.hs.coursemanagerback.model.employee.dto.EmployeeExemptionDto;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class ExemptionNotNullValidator implements ConstraintValidator<ExemptionNotNull, EmployeeExemptionPatchDto> {
+public class ExemptionNotNullValidator implements ConstraintValidator<ExemptionNotNull, EmployeeExemptionDto> {
     @Override
     public void initialize(ExemptionNotNull constraintAnnotation) {
 
     }
 
     @Override
-    public boolean isValid(EmployeeExemptionPatchDto employeeExemptionPatchDto, ConstraintValidatorContext constraintValidatorContext) {
-        if (employeeExemptionPatchDto.getExemption() == null) {
-            return employeeExemptionPatchDto.getExemptionStartDate() == null && employeeExemptionPatchDto.getExemptionEndDate() == null;
+    public boolean isValid(EmployeeExemptionDto employeeExemptionDto, ConstraintValidatorContext constraintValidatorContext) {
+        if (employeeExemptionDto.getExemption() == null) {
+            return employeeExemptionDto.getExemptionStartDate() == null && employeeExemptionDto.getExemptionEndDate() == null;
         } else {
-            return employeeExemptionPatchDto.getExemptionStartDate() != null;
+            return employeeExemptionDto.getExemptionStartDate() != null;
         }
     }
 }

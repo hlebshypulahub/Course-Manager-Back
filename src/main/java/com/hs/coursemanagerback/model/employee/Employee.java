@@ -85,6 +85,12 @@ public class Employee {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     private LocalDate eduGraduationDate;
 
+    /// Note
+    private String note;
+    private boolean shouldExtendNotification;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
+    private LocalDate notificationDate;
+
     public Employee() {
 
     }
@@ -148,6 +154,30 @@ public class Employee {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean isShouldExtendNotification() {
+        return shouldExtendNotification;
+    }
+
+    public void setShouldExtendNotification(boolean shouldExtendNotification) {
+        this.shouldExtendNotification = shouldExtendNotification;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public LocalDate getNotificationDate() {
+        return notificationDate;
+    }
+
+    public void setNotificationDate(LocalDate notificationDate) {
+        this.notificationDate = notificationDate;
     }
 
     public Long getForeignId() {

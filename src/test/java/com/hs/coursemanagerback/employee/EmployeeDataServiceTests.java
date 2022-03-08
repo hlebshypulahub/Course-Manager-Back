@@ -2,8 +2,8 @@ package com.hs.coursemanagerback.employee;
 
 import com.hs.coursemanagerback.exception.EducationNotValidException;
 import com.hs.coursemanagerback.model.employee.Employee;
-import com.hs.coursemanagerback.model.employee.dto.EmployeeCategoryPatchDto;
-import com.hs.coursemanagerback.model.employee.dto.EmployeeEducationPatchDto;
+import com.hs.coursemanagerback.model.employee.dto.EmployeeCategoryDto;
+import com.hs.coursemanagerback.model.employee.dto.EmployeeEducationDto;
 import com.hs.coursemanagerback.model.employee.dto.EmployeePatchDto;
 import com.hs.coursemanagerback.model.enumeration.Category;
 import com.hs.coursemanagerback.model.enumeration.Education;
@@ -84,10 +84,10 @@ public class EmployeeDataServiceTests {
 
     @Test
     public void Should_NotPatchCategory_When_EmployeeNotExemptioned_AndEducationNotValid() {
-        EmployeeCategoryPatchDto employeeCategoryPatchDto = new EmployeeCategoryPatchDto();
+        EmployeeCategoryDto employeeCategoryDto = new EmployeeCategoryDto();
 
         EducationNotValidException exception = assertThrows(EducationNotValidException.class, () -> {
-            employeeDataService.patch(any(Long.class), employeeCategoryPatchDto);
+            employeeDataService.patch(any(Long.class), employeeCategoryDto);
         });
 
         assertEquals("Education is not valid to add category", exception.getMessage());
@@ -95,15 +95,15 @@ public class EmployeeDataServiceTests {
 
     @Test
     public void Should_PatchCategory_When_EmployeeNotExemptioned_AndEducationIsValid() {
-        EmployeeCategoryPatchDto employeeCategoryPatchDto = new EmployeeCategoryPatchDto();
-        employeeCategoryPatchDto.setCategory(Category.FIRST);
+        EmployeeCategoryDto employeeCategoryDto = new EmployeeCategoryDto();
+        employeeCategoryDto.setCategory(Category.FIRST);
 
-        BeanUtils.copyProperties(employeeCategoryPatchDto, employee);
+        BeanUtils.copyProperties(employeeCategoryDto, employee);
         doReturn(employee).when(employeeRepository).save(any(Employee.class));
 
         doReturn(true).when(employeeValidationService).educationIsValid(any(Employee.class));
 
-        Employee newEmployee = employeeDataService.patch(any(Long.class), employeeCategoryPatchDto);
+        Employee newEmployee = employeeDataService.patch(any(Long.class), employeeCategoryDto);
 
         assertNotNull(newEmployee);
         assertEquals(Category.FIRST, newEmployee.getCategory());
@@ -111,15 +111,15 @@ public class EmployeeDataServiceTests {
 
     @Test
     public void Should_PatchEducation() {
-        EmployeeEducationPatchDto employeeEducationPatchDto = new EmployeeEducationPatchDto();
-        employeeEducationPatchDto.setEducation(Education.HIGHER);
-        employeeEducationPatchDto.setEduName("AGH");
-        employeeEducationPatchDto.setEduGraduationDate(LocalDate.of(2020, 5, 5));
+        EmployeeEducationDto employeeEducationDto = new EmployeeEducationDto();
+        employeeEducationDto.setEducation(Education.HIGHER);
+        employeeEducationDto.setEduName("AGH");
+        employeeEducationDto.setEduGraduationDate(LocalDate.of(2020, 5, 5));
 
-        BeanUtils.copyProperties(employeeEducationPatchDto, employee);
+        BeanUtils.copyProperties(employeeEducationDto, employee);
         doReturn(employee).when(employeeRepository).save(any(Employee.class));
 
-        Employee newEmployee = employeeDataService.patch(any(Long.class), employeeEducationPatchDto);
+        Employee newEmployee = employeeDataService.patch(any(Long.class), employeeEducationDto);
 
         assertNotNull(newEmployee);
         assertEquals("AGH", newEmployee.getEduName());

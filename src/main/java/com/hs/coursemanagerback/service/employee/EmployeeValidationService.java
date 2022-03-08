@@ -1,8 +1,8 @@
 package com.hs.coursemanagerback.service.employee;
 
 import com.hs.coursemanagerback.model.employee.Employee;
-import com.hs.coursemanagerback.model.employee.dto.EmployeeCategoryPatchDto;
-import com.hs.coursemanagerback.model.employee.dto.EmployeeEducationPatchDto;
+import com.hs.coursemanagerback.model.employee.dto.EmployeeCategoryDto;
+import com.hs.coursemanagerback.model.employee.dto.EmployeeEducationDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,16 +22,16 @@ public class EmployeeValidationService {
     }
 
     public boolean categoryIsValid(Employee employee) {
-        EmployeeCategoryPatchDto employeeCategoryPatchDto = new EmployeeCategoryPatchDto();
-        BeanUtils.copyProperties(employee, employeeCategoryPatchDto);
-        Set<ConstraintViolation<EmployeeCategoryPatchDto>> violations = validator.validate(employeeCategoryPatchDto);
+        EmployeeCategoryDto employeeCategoryDto = new EmployeeCategoryDto();
+        BeanUtils.copyProperties(employee, employeeCategoryDto);
+        Set<ConstraintViolation<EmployeeCategoryDto>> violations = validator.validate(employeeCategoryDto);
         return violations.isEmpty();
     }
 
     public boolean educationIsValid(Employee employee) {
-        EmployeeEducationPatchDto employeeEducationPatchDto = new EmployeeEducationPatchDto();
-        BeanUtils.copyProperties(employee, employeeEducationPatchDto);
-        Set<ConstraintViolation<EmployeeEducationPatchDto>> violations = validator.validate(employeeEducationPatchDto);
+        EmployeeEducationDto employeeEducationDto = new EmployeeEducationDto();
+        BeanUtils.copyProperties(employee, employeeEducationDto);
+        Set<ConstraintViolation<EmployeeEducationDto>> violations = validator.validate(employeeEducationDto);
         return violations.isEmpty();
     }
 }

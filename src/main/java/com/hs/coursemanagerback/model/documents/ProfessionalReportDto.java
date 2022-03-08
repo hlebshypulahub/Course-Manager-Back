@@ -1,6 +1,6 @@
 package com.hs.coursemanagerback.model.documents;
 
-public class ProfessionalReportDto {
+public class ProfessionalReportDto extends DocumentDto {
 
     private String mainInfo;
     private String startYear;

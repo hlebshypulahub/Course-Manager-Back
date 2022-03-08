@@ -15,10 +15,12 @@ public class EmployeePostConstructService {
 
     private final EmployeeDataService employeeDataService;
     private final CourseService courseService;
+    private final EmployeeNoteService employeeNoteService;
     private final Logger logger;
 
     @Autowired
-    public EmployeePostConstructService(EmployeeDataService employeeDataService, CourseService courseService, Logger logger) {
+    public EmployeePostConstructService(EmployeeDataService employeeDataService, CourseService courseService, EmployeeNoteService employeeNoteService, Logger logger) {
+        this.employeeNoteService = employeeNoteService;
         this.employeeDataService = employeeDataService;
         this.courseService = courseService;
         this.logger = logger;
@@ -26,12 +28,15 @@ public class EmployeePostConstructService {
 
     /// "0 0 6 * * *" every day 6 a.m.
     /// "0 * * * * *" every minute
-    @Scheduled(cron = "0 0 6 * * *")
+    @Scheduled(cron = "0 * * * * *")
     @PostConstruct
     public void calculateEmployeesCourseHours() {
         List<Employee> employees = employeeDataService.getAll();
         for (Employee employee : employees) {
             courseService.process(employee);
+            employeeNoteService.extendDate(employee);
+
+            /// Saving
             employeeDataService.save(employee);
         }
     }

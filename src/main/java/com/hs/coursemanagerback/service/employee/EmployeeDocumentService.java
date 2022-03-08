@@ -1,9 +1,6 @@
 package com.hs.coursemanagerback.service.employee;
 
-import com.hs.coursemanagerback.model.documents.PastJob;
-import com.hs.coursemanagerback.model.documents.ProfessionalReportDto;
-import com.hs.coursemanagerback.model.documents.QualificationSheetDto;
-import com.hs.coursemanagerback.model.documents.RepresentationDto;
+import com.hs.coursemanagerback.model.documents.*;
 import com.hs.coursemanagerback.model.employee.Employee;
 import com.hs.coursemanagerback.utils.StringDocumentsUtils;
 import com.hs.coursemanagerback.utils.converters.LocalDateToStringConverter;
@@ -28,25 +25,17 @@ public class EmployeeDocumentService {
         this.logger = logger;
     }
 
-    public ByteArrayInputStream generateDocument(Long employeeId, RepresentationDto representationDto) {
+    public ByteArrayInputStream generateDocument(Long employeeId, DocumentDto documentDto) {
 
         Employee employee = employeeDataService.findById(employeeId);
 
-        return generateRepresentation(employee, representationDto);
-    }
-
-    public ByteArrayInputStream generateDocument(Long employeeId, ProfessionalReportDto professionalReportDto) {
-
-        Employee employee = employeeDataService.findById(employeeId);
-
-        return generateProfessionalReport(employee, professionalReportDto);
-    }
-
-    public ByteArrayInputStream generateDocument(Long employeeId, QualificationSheetDto qualificationSheetDto) {
-
-        Employee employee = employeeDataService.findById(employeeId);
-
-        return generateQualificationSheet(employee, qualificationSheetDto);
+        if (documentDto instanceof ProfessionalReportDto) {
+            return generateProfessionalReport(employee, (ProfessionalReportDto) documentDto);
+        }
+        if (documentDto instanceof RepresentationDto) {
+            return generateRepresentation(employee, (RepresentationDto) documentDto);
+        }
+        return generateQualificationSheet(employee, (QualificationSheetDto) documentDto);
     }
 
     private ByteArrayInputStream generateQualificationSheet(Employee employee, QualificationSheetDto qualificationSheetDto) {
@@ -74,11 +63,11 @@ public class EmployeeDocumentService {
             html = StringDocumentsUtils.replace(html, "PROFESSIONAL_TRAINING", qualificationSheetDto.getProfessionalTraining());
             html = StringDocumentsUtils.replace(html, "CLUBS", qualificationSheetDto.getClubs(), 50);
             html = StringDocumentsUtils.replace(html, "INVENTIONS", qualificationSheetDto.getInventions(), 30);
-            
+
             StringBuilder pastJobs = new StringBuilder();
             for (PastJob pastJob : qualificationSheetDto.getPastJobs()) {
                 StringBuilder pastJobSb = new StringBuilder();
-                String []strArray = StringDocumentsUtils.separate(pastJob.getPastJob());
+                String[] strArray = StringDocumentsUtils.separate(pastJob.getPastJob());
                 for (String s : strArray) {
                     pastJobSb.append("<div style=\"display: table\">\n" +
                             "        <div style=\"display: table-cell\">&nbsp;&nbsp;&nbsp;</div>\n" +
@@ -126,7 +115,7 @@ public class EmployeeDocumentService {
             html = Files.readString(Path.of("src/main/java/com/hs/coursemanagerback/documents/professional_report.html"));
 
             html = html.replace("START_YEAR", professionalReportDto.getStartYear())
-                    .replace("END_YEAR", professionalReportDto.getEndYear());
+                       .replace("END_YEAR", professionalReportDto.getEndYear());
 
             String[] strArray = StringDocumentsUtils.separate(professionalReportDto.getMainInfo());
             StringBuilder mi = new StringBuilder("");
