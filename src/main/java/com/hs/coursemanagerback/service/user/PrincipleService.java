@@ -24,9 +24,15 @@ public class PrincipleService {
         return userDetails.getId();
     }
 
-    public String getPrincipalCompany() {
+    public User getPrincipalUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        return userRepository.findById(userDetails.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public String getPrincipalEmail() {
         User user = userRepository.getById(getId());
-        return user.getCompany();
+        return user.getEmail();
     }
 
 }

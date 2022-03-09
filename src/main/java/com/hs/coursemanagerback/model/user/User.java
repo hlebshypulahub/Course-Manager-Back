@@ -1,5 +1,8 @@
 package com.hs.coursemanagerback.model.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hs.coursemanagerback.model.employee.Employee;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -24,7 +27,6 @@ public class User {
     private String username;
 
     @NotBlank
-    @Size(max = 50)
     @Email
     private String email;
 
@@ -33,6 +35,10 @@ public class User {
     @NotBlank
     @Size(min = 8)
     private String password;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<Employee> employees;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "user_role",
@@ -49,8 +55,37 @@ public class User {
         this.password = password;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", company='" + company + '\'' +
+                ", password='" + password + '\'' +
+                ", employees=" + employees +
+                ", roles=" + roles +
+                '}';
+    }
+
+    public void addEmployee(Employee employee) {
+        employee.setUser(this);
+        if (this.employees == null) {
+            this.employees = new HashSet<>();
+        }
+        this.employees.add(employee);
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public Set<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
     }
 
     public String getUsername() {

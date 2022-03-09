@@ -7,12 +7,14 @@ import com.hs.coursemanagerback.model.user.UserRole;
 import com.hs.coursemanagerback.repository.RoleRepository;
 import com.hs.coursemanagerback.repository.UserRepository;
 import com.hs.coursemanagerback.security.jwt.JwtUtils;
+import com.hs.coursemanagerback.security.payload.request.EditRequest;
 import com.hs.coursemanagerback.security.payload.request.LoginRequest;
 import com.hs.coursemanagerback.security.payload.request.SignupRequest;
 import com.hs.coursemanagerback.security.payload.response.JwtResponse;
 import com.hs.coursemanagerback.security.payload.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -64,7 +66,23 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
+                userDetails.getCompany(),
                 roles));
+    }
+
+    @PostMapping("/edit")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> editUser(@Valid @RequestBody EditRequest editRequest) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new RuntimeException("User not exist to edit data"));
+
+        user.setCompany(editRequest.getCompany());
+        user.setEmail(editRequest.getEmail());
+
+        userRepository.save(user);
+
+        return ResponseEntity.ok(editRequest);
     }
 
     //// "username":"hlebs"

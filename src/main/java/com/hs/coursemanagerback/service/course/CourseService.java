@@ -39,18 +39,11 @@ public class CourseService {
 
     public void process(@Valid Employee employee) {
         if (employeeValidationService.categoryIsValid(employee)) {
-//            if (employee.getCategory() == Category.NONE) {
                 employee.setCourseHoursSum(employee.getCourses().stream().filter(course ->
                         courseIsBetweenDates(course,
                                 employee.getCategoryAssignmentDeadlineDate().minusYears(Employee.CATEGORY_VERIFICATION_YEARS),
                                 employee.getCategoryAssignmentDeadlineDate())
                 ).mapToInt(Course::getHours).sum());
-//            } else {
-//                employee.setCourseHoursSum(employee.getCourses().stream().filter(course ->
-//                        courseIsBetweenDates(course,
-//                                employee.getCategoryAssignmentDate(), employee.getCategoryAssignmentDeadlineDate())
-//                ).mapToInt(Course::getHours).sum());
-//            }
         }
     }
 

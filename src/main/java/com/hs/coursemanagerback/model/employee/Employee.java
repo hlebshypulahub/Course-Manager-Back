@@ -6,6 +6,7 @@ import com.hs.coursemanagerback.model.course.Course;
 import com.hs.coursemanagerback.model.enumeration.Category;
 import com.hs.coursemanagerback.model.enumeration.Education;
 import com.hs.coursemanagerback.model.enumeration.Exemption;
+import com.hs.coursemanagerback.model.user.User;
 import com.hs.coursemanagerback.validator.CategoryDatesNotNull;
 
 import javax.persistence.*;
@@ -91,6 +92,11 @@ public class Employee {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     private LocalDate notificationDate;
 
+    @ManyToOne
+    @JoinColumn(name = "app_user_id", nullable = false)
+    @JsonIgnore
+    private User user;
+
     public Employee() {
 
     }
@@ -170,6 +176,14 @@ public class Employee {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LocalDate getNotificationDate() {
