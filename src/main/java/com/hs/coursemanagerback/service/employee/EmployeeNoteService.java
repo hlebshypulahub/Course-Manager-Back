@@ -46,6 +46,7 @@ public class EmployeeNoteService {
     private void sendNotificationEmail(Employee employee) {
         try {
             javaMailSender.send(generateMessage(employee, "NOTE"));
+            logger.info("Sending an email!");
         } catch (MessagingException e) {
             e.printStackTrace();
             logger.error("Unable to send an email!");
@@ -77,7 +78,7 @@ public class EmployeeNoteService {
         String html = getForm();
 
         if (StringUtils.isNotBlank(employee.getNote())) {
-            StringBuilder sb = new StringBuilder("<h5>Заметки:</h5>\n");
+            StringBuilder sb = new StringBuilder("<h4>Заметки:</h4>\n");
 
             for (String line : employee.getNote().split("\n")) {
                 sb.append("<div>" + line + "</div>");
