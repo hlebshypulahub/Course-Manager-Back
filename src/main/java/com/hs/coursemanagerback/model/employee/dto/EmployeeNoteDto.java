@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 
-public class EmployeeNoteDto extends EmployeePatchDto{
+public class EmployeeNoteDto implements EmployeeDto {
 
     private String note;
     private boolean shouldExtendNotification;

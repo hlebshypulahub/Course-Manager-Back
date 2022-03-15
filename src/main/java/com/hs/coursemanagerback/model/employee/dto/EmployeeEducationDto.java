@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-public class EmployeeEducationDto extends EmployeePatchDto {
+public class EmployeeEducationDto implements EmployeeDto {
 
     @NotNull(message = "Education cannot be null")
     private Education education;

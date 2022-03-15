@@ -4,7 +4,6 @@ import com.hs.coursemanagerback.exception.EducationNotValidException;
 import com.hs.coursemanagerback.model.employee.Employee;
 import com.hs.coursemanagerback.model.employee.dto.EmployeeCategoryDto;
 import com.hs.coursemanagerback.model.employee.dto.EmployeeEducationDto;
-import com.hs.coursemanagerback.model.employee.dto.EmployeePatchDto;
 import com.hs.coursemanagerback.model.enumeration.Category;
 import com.hs.coursemanagerback.model.enumeration.Education;
 import com.hs.coursemanagerback.repository.EmployeeRepository;
@@ -75,8 +74,7 @@ public class EmployeeDataServiceTests {
     public void Should_SaveEmployee_When_Patch() {
         doReturn(employee).when(employeeRepository).save(any(Employee.class));
 
-        EmployeePatchDto employeePatchDto = new EmployeePatchDto();
-        Employee newEmployee = employeeDataService.patch(any(Long.class), employeePatchDto);
+        Employee newEmployee = employeeDataService.patch(any(Long.class), new EmployeeEducationDto());
 
         assertNotNull(newEmployee);
         assertEquals(employee.getFullName(), newEmployee.getFullName());
