@@ -147,7 +147,7 @@ public class EmployeeRepositoryIntegrationTests {
 
         Long employeeId = employee.getId();
 
-        List<Course> courses = courseRepository.findAddByEmployeeId(employeeId);
+        List<Course> courses = courseRepository.findAllByEmployeeId(employeeId);
 
         assertEquals(30, courses.stream().mapToInt(Course::getHours).sum());
     }

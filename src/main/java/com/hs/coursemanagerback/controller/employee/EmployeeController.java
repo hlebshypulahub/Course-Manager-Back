@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.ByteArrayInputStream;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(exposedHeaders = {"Content-Disposition"})
@@ -37,7 +38,12 @@ public class EmployeeController {
 
     @GetMapping("")
     public List<Employee> getEmployees() {
-        return employeeDataService.getAll();
+        return employeeDataService.getAllForPrincipal();
+    }
+
+    @GetMapping("/by-groups")
+    public Map<String, List<Employee>> getEmployeesByGroups() {
+        return employeeDataService.getEmployeeListsByGroups();
     }
 
     @GetMapping("/for-course-plan")

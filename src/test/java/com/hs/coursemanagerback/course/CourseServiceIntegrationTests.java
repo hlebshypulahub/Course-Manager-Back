@@ -59,7 +59,7 @@ public class CourseServiceIntegrationTests {
     public void Should_AddCourseForEmployee() {
         Employee newEmployee = employeeDataService.save(employee);
 
-        Course newCourse = courseService.addCourseForEmployee(employee, course);
+        Course newCourse = courseService.addCourseForEmployee(employee.getId(), course);
 
         assertNotNull(newCourse);
         assertEquals(newEmployee, course.getEmployee());
@@ -78,8 +78,8 @@ public class CourseServiceIntegrationTests {
         course1.setStartDate(LocalDate.of(2022, 10, 10));
         course1.setEndDate(LocalDate.of(2022, 11, 11));
 
-        courseService.addCourseForEmployee(employee, course1);
-        courseService.addCourseForEmployee(employee, course);
+        courseService.addCourseForEmployee(employee.getId(), course1);
+        courseService.addCourseForEmployee(employee.getId(), course);
 
         List<Course> courses = courseService.getCoursesForEmployee(employeeId);
 
@@ -101,7 +101,7 @@ public class CourseServiceIntegrationTests {
 
         employeeDataService.save(employee);
 
-        courseService.addCourseForEmployee(employee, course);
+        courseService.addCourseForEmployee(employee.getId(), course);
 
         assertEquals(10, employee.getCourseHoursSum());
     }
@@ -120,7 +120,7 @@ public class CourseServiceIntegrationTests {
 
         employeeDataService.save(employee);
 
-        courseService.addCourseForEmployee(employee, course);
+        courseService.addCourseForEmployee(employee.getId(), course);
 
         assertEquals(0, employee.getCourseHoursSum());
     }
@@ -140,7 +140,7 @@ public class CourseServiceIntegrationTests {
 
         employeeDataService.save(employee);
 
-        courseService.addCourseForEmployee(employee, course);
+        courseService.addCourseForEmployee(employee.getId(), course);
 
         assertEquals(0, employee.getCourseHoursSum());
     }

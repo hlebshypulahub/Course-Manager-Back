@@ -4,6 +4,7 @@ import com.hs.coursemanagerback.model.course.Course;
 import com.hs.coursemanagerback.model.employee.Employee;
 import com.hs.coursemanagerback.repository.CourseRepository;
 import com.hs.coursemanagerback.service.course.CourseService;
+import com.hs.coursemanagerback.service.employee.EmployeeDataService;
 import com.hs.coursemanagerback.service.employee.EmployeeValidationService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +30,8 @@ public class CourseServiceTests {
     private EmployeeValidationService employeeValidationService;
     @Mock
     private CourseRepository courseRepository;
+    @Mock
+    private EmployeeDataService employeeDataService;
 
     private CourseService courseService;
 
@@ -57,7 +60,7 @@ public class CourseServiceTests {
 
     @Test
     public void Should_AddCourseForEmployee() {
-        courseService.addCourseForEmployee(employee, course);
+        courseService.addCourseForEmployee(employee.getId(), course);
 
         assertEquals(1, employee.getCourses().size());
         assertEquals(employee, course.getEmployee());
@@ -65,14 +68,14 @@ public class CourseServiceTests {
 
     @Test
     public void Should_ReturnCoursesForEmployee_WhenCalled_GetCoursesForEmployee() {
-        courseService.addCourseForEmployee(employee, course);
+        courseService.addCourseForEmployee(employee.getId(), course);
 
         Course course1 = new Course();
         course1.setHours(10);
         course1.setStartDate(LocalDate.of(2022, 10, 10));
         course1.setEndDate(LocalDate.of(2022, 11, 11));
 
-        courseService.addCourseForEmployee(employee, course1);
+        courseService.addCourseForEmployee(employee.getId(), course1);
 
         System.out.println(employee.getCourses());
 

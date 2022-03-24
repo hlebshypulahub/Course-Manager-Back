@@ -17,12 +17,10 @@ import java.util.List;
 public class CourseController {
 
     private final CourseService courseService;
-    private final EmployeeDataService employeeDataService;
 
     @Autowired
-    public CourseController(CourseService courseService, EmployeeDataService employeeDataService) {
+    public CourseController(CourseService courseService) {
         this.courseService = courseService;
-        this.employeeDataService = employeeDataService;
     }
 
     @GetMapping("/for-employee/{id}")
@@ -32,6 +30,6 @@ public class CourseController {
 
     @PostMapping("/for-employee/{id}")
     public ResponseEntity<Course> addCourseToEmployee(@PathVariable Long id, @RequestBody Course course) {
-        return ResponseEntity.ok(courseService.addCourseForEmployee(employeeDataService.findById(id), course));
+        return ResponseEntity.ok(courseService.addCourseForEmployee(id, course));
     }
 }

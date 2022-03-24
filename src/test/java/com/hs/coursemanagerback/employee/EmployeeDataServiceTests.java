@@ -9,6 +9,7 @@ import com.hs.coursemanagerback.model.enumeration.Education;
 import com.hs.coursemanagerback.repository.EmployeeRepository;
 import com.hs.coursemanagerback.service.course.CourseService;
 import com.hs.coursemanagerback.service.employee.*;
+import com.hs.coursemanagerback.service.user.PrincipleService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,8 @@ public class EmployeeDataServiceTests {
     EmployeeFilteringService employeeFilteringService;
     @Mock
     EmployeeCategoryService employeeCategoryService;
+    @Mock
+    PrincipleService principleService;
 
     private EmployeeDataService employeeDataService;
 
@@ -52,7 +55,7 @@ public class EmployeeDataServiceTests {
     @BeforeEach
     public void before() {
         employeeDataService = new EmployeeDataService(employeeRepository, courseService, employeeValidationService,
-                employeeExemptionService, employeeFilteringService, employeeCategoryService);
+                employeeExemptionService, employeeFilteringService, employeeCategoryService, principleService);
 
         employee = new Employee();
         employee.setForeignId(1L);
