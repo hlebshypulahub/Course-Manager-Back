@@ -28,7 +28,7 @@ public class EmployeePostConstructService {
 
     /// "0 0 6 * * *" every day 6 a.m.
     /// "0 * * * * *" every minute
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0 6 * * *")
     @PostConstruct
     public void processEmployees() {
         List<Employee> employees = employeeDataService.getAll();

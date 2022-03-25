@@ -86,6 +86,11 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeDataService.patch(id, employeeNoteDto));
     }
 
+    @PostMapping(value = "/course-plan", produces = MediaType.TEXT_HTML_VALUE)
+    public void getRepresentation(@RequestBody List<List<Integer>> employeesIds) {
+        System.out.println(employeesIds);
+    }
+
     @PostMapping(value = "/{id}/documents/representation", produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity<byte[]> getRepresentation(@PathVariable(name = "id") Long employeeId, @RequestBody RepresentationDto representationDto) {
         return getDocument(employeeId, representationDto);
