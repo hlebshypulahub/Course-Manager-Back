@@ -369,4 +369,12 @@ public class Employee {
     public void setCourses(Set<Course> courses) {
         this.courses = courses;
     }
+
+    public String getShortName() {
+        String[] parts = this.fullName.split(" ");
+        if (parts.length == 3) {
+            return parts[0] + " " + parts[1].charAt(0) + ". " + parts[2].charAt(0) + ".";
+        }
+        return this.fullName;
+    }
 }

@@ -87,8 +87,8 @@ public class EmployeeController {
     }
 
     @PostMapping(value = "/course-plan", produces = MediaType.TEXT_HTML_VALUE)
-    public void getRepresentation(@RequestBody List<List<Integer>> employeesIds) {
-        System.out.println(employeesIds);
+    public ResponseEntity<byte[]> getRepresentation(@RequestBody List<List<Long>> employeesIds) {
+        return generateFileResponse(employeeDocumentService.generateCoursePlan(employeesIds));
     }
 
     @PostMapping(value = "/{id}/documents/representation", produces = MediaType.TEXT_HTML_VALUE)
@@ -107,8 +107,10 @@ public class EmployeeController {
     }
 
     private ResponseEntity<byte[]> getDocument(Long employeeId, DocumentDto documentDto) {
-        ByteArrayInputStream bis = employeeDocumentService.generateDocument(employeeId, documentDto);
+        return generateFileResponse(employeeDocumentService.generateDocument(employeeId, documentDto));
+    }
 
+    private ResponseEntity<byte[]> generateFileResponse(ByteArrayInputStream bis) {
         byte[] byteArray = bis.readAllBytes();
 
         var headers = new HttpHeaders();

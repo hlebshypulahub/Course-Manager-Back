@@ -12,6 +12,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class EmployeeDocumentService {
@@ -23,6 +25,39 @@ public class EmployeeDocumentService {
     public EmployeeDocumentService(EmployeeDataService employeeDataService, Logger logger) {
         this.employeeDataService = employeeDataService;
         this.logger = logger;
+    }
+
+    public ByteArrayInputStream generateCoursePlan(List<List<Long>> employeesIds) {
+        String html = "";
+
+        try {
+            html = Files.readString(Path.of("src/main/java/com/hs/coursemanagerback/documents/course_plan.html"));
+
+            for (int i = 0; i < 2; i++) {
+                StringBuilder sb = new StringBuilder();
+
+                for (int j = 0; j < employeesIds.get(i).size(); j++) {
+                    Employee employee = employeeDataService.findById(employeesIds.get(i).get(j));
+
+                    LocalDate date = employee.getDocsSubmitDeadlineDate().minusMonths(1);
+                    String month = date.getMonthValue() < 10 ? "0" + date.getMonthValue() : String.valueOf(date.getMonthValue());
+                    String dateString = month + "." + String.valueOf(date.getYear()).substring(2);
+
+                    sb.append("<tr>\n" +
+                            "                <td class=\"num-column\">" + (j + 1) + ".</td>\n" +
+                            "                <td style=\"width: 100px;\">&nbsp;&nbsp;&nbsp;&nbsp;" + employee.getShortName() + "</td>\n" +
+                            "                <td style=\"width: 100px;\">&nbsp;&nbsp;&nbsp;&nbsp;" + employee.getQualification() + "</td>\n" +
+                            "                <td style=\"width: 100px;\">&nbsp;&nbsp;&nbsp;&nbsp;" + employee.getCourseHoursLeft() + " ч. (до " + dateString + ")" + "</td>\n" +
+                            "            </tr>");
+                }
+
+                html = html.replace("TABLE" + (i + 1), sb.toString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new ByteArrayInputStream(html.getBytes());
     }
 
     public ByteArrayInputStream generateDocument(Long employeeId, DocumentDto documentDto) {
