@@ -2,7 +2,7 @@ package com.hs.coursemanagerback.model.employee.dto;
 
 import javax.validation.constraints.NotNull;
 
-public class EmployeeActiveDto implements EmployeeDto {
+public class EmployeeActiveDto extends EmployeeDto {
 
     @NotNull(message = "active cannot be null")
     private Boolean active;

@@ -7,7 +7,7 @@ import com.hs.coursemanagerback.validator.ExemptionNotNull;
 import java.time.LocalDate;
 
 @ExemptionNotNull
-public class EmployeeExemptionDto implements EmployeeDto {
+public class EmployeeExemptionDto extends EmployeeDto {
 
     private Exemption exemption;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")

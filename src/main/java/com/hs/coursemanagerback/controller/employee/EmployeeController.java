@@ -56,34 +56,9 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeDataService.findById(id));
     }
 
-    @PostMapping(path = "/{id}/education", consumes = "application/json")
-    public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeEducationDto employeeEducationDto) {
-        return ResponseEntity.ok(employeeDataService.patch(id, employeeEducationDto));
-    }
-
-    @PostMapping(path = "/{id}/category", consumes = "application/json")
-    public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeCategoryDto employeeCategoryDto) {
-        return ResponseEntity.ok(employeeDataService.patch(id, employeeCategoryDto));
-    }
-
-    @PostMapping(path = "/{id}/category-deadline", consumes = "application/json")
-    public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeCategoryDeadlineDto employeeCategoryDeadlineDto) {
-        return ResponseEntity.ok(employeeDataService.patch(id, employeeCategoryDeadlineDto));
-    }
-
-    @PostMapping(path = "/{id}/active", consumes = "application/json")
-    public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeActiveDto employeeActiveDto) {
-        return ResponseEntity.ok(employeeDataService.patch(id, employeeActiveDto));
-    }
-
-    @PostMapping(path = "/{id}/exemption", consumes = "application/json")
-    public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeExemptionDto employeeExemptionDto) {
-        return ResponseEntity.ok(employeeDataService.patch(id, employeeExemptionDto));
-    }
-
-    @PostMapping(path = "/{id}/note", consumes = "application/json")
-    public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeNoteDto employeeNoteDto) {
-        return ResponseEntity.ok(employeeDataService.patch(id, employeeNoteDto));
+    @PostMapping(path = "/{id}/patch", consumes = "application/json")
+    public ResponseEntity<Employee> patchEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeDto employeeDto) {
+        return ResponseEntity.ok(employeeDataService.patch(id, employeeDto));
     }
 
     @PostMapping(value = "/course-plan", produces = MediaType.TEXT_HTML_VALUE)

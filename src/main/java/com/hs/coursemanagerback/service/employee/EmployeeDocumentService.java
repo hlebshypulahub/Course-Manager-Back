@@ -34,7 +34,7 @@ public class EmployeeDocumentService {
             html = Files.readString(Path.of("src/main/java/com/hs/coursemanagerback/documents/course_plan.html"));
 
             for (int i = 0; i < 2; i++) {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
 
                 for (int j = 0; j < employeesIds.get(i).size(); j++) {
                     Employee employee = employeeDataService.findById(employeesIds.get(i).get(j));

@@ -1,13 +1,14 @@
 package com.hs.coursemanagerback.model.employee.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hs.coursemanagerback.model.enumeration.Education;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-public class EmployeeEducationDto implements EmployeeDto {
+public class EmployeeEducationDto extends EmployeeDto {
 
     @NotNull(message = "Education cannot be null")
     private Education education;
