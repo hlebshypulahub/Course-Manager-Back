@@ -29,17 +29,44 @@ The below documentation describes only the technical side of the application, wi
 
 **More [Screenshots](documents/SCREENSHOTS.md)**
 
-## Details
+## Technology Stack
 
-- [Technology stack & other Open-source libraries](documents/technology_stack.md)   
-- [Architecture](documents/architecture.md) 
-- [Installation](documents/INSTALLATION.MD)  
-- [Deployment](documents/DEPLOYMENT.md)  
-- [Security](documents/API.md)  
-- [Testing API](documents/TESTING.MD)  
-- [Changelog](documents/CHANGELOG.md) 
-- [Code Coverage](documents/CODE_COVERAGE.MD) 
-- [Documentation](documents/DOCUMENTATION.MD) 
+### Back End
+
+|Technology                |Description         |
+|--------------------------|--------------------|
+|Core Framework            |Spring Boot 2.5.6        |
+|Security Framework        |Spring Security, JWT|
+|Dependency Management|Maven|
+|Testing|JUnit 4-5, Mockito 4|
+|Logging|log4j2|
+|Emails|Spring Email|
+|Version control| Git|
+|API Development Testing Environment| Postman|
+
+</br>
+
+
+### Data
+
+|                 Technology                                               |                              Description                        |
+|--------------------------------------------------------------------------|-----------------------------------------------------------------|
+|PostgreSQL                              |Relational Database Management System                                  |
+|Hibernate                                |Object-relational mapping framework                |
+|H2 Database Engine|Java SQL embedded database|
+
+</br>
+
+
+### Client - Front End/UI
+
+<a href="https://github.com/hlebshypulahub/Course-Manager-Front"><strong>Front end application »</strong></a>
+
+
+## Details
+ 
+- [Architecture](documents/architecture.md)   
+- [Security](documents/security.md)
 
 ## Contact
 

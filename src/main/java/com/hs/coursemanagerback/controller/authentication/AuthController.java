@@ -85,8 +85,6 @@ public class AuthController {
         return ResponseEntity.ok(editRequest);
     }
 
-    //// "username":"hlebs"
-    //// "password":"shypulah"
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
