@@ -31,10 +31,8 @@ The below documentation describes only the technical side of the application, wi
 
 ## Details
 
-- [Technology stack & other Open-source libraries](documents/technology_stack.md)  
-- [Technical Functionalities and To-Do](documents/TECHNICAL_FUNCTIONALITIES.MD)  
-- [Getting Started](documents/GETTING_STARTED.MD)  
-- [Architecture](documents/ARCHITECTURE.md) 
+- [Technology stack & other Open-source libraries](documents/technology_stack.md)   
+- [Architecture](documents/architecture.md) 
 - [Installation](documents/INSTALLATION.MD)  
 - [Deployment](documents/DEPLOYMENT.md)  
 - [Security](documents/API.md)  
