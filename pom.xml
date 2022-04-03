@@ -12,7 +12,7 @@
     <artifactId>Praca-Inz-Ledikom-Kursy</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Praca Inz Ledikom Kursy</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Course Manager Application</description>
     <properties>
         <java.version>11</java.version>
     </properties>
