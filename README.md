@@ -6,7 +6,7 @@ The below documentation describes only the technical side of the application, wi
 
 </br>
 
-<a href="https://github.com/hlebshypulahub/Course-Manager-Front"><strong>Front end application »</strong></a>
+<a href="https://github.com/hlebshypulahub/Course-Manager-Front"><strong style="font-size: 24px">Front end application »</strong></a>
 
 </br>
 
