@@ -6,7 +6,7 @@ The below documentation describes only the technical side of the application, wi
 
 </br>
 
-<a href="https://github.com/hlebshypulahub/Course-Manager-Front"><strong><font size="5">Front end application »</font></strong></a>
+<a href="https://github.com/hlebshypulahub/Course-Manager-Front"><strong><font size="5">Front-end application »</font></strong></a>
 
 </br>
 
@@ -60,7 +60,7 @@ The below documentation describes only the technical side of the application, wi
 
 ### Client - Front End/UI
 
-<a href="https://github.com/hlebshypulahub/Course-Manager-Front"><strong>Front end application »</strong></a>
+<a href="https://github.com/hlebshypulahub/Course-Manager-Front"><strong>Front-end application »</strong></a>
 
 
 ## Details
