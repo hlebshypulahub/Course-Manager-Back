@@ -27,7 +27,7 @@ The below documentation describes only the technical side of the application, wi
 
 [![Employee Profile](documents/images/employee_view.png)](documents/images/employee_view.png)
 
-**More [Screenshots](documents/SCREENSHOTS.md)**
+**More [Screenshots](https://github.com/hlebshypulahub/Course-Manager-Front/blob/master/docs/screenshots.md)**
 
 ## Technology Stack
 
