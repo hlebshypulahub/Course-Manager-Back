@@ -1,23 +1,20 @@
 package com.hs.coursemanagerback.controller.employee;
 
-import com.hs.coursemanagerback.model.documents.DocumentDto;
 import com.hs.coursemanagerback.model.documents.ProfessionalReportDto;
 import com.hs.coursemanagerback.model.documents.QualificationSheetDto;
 import com.hs.coursemanagerback.model.documents.RepresentationDto;
 import com.hs.coursemanagerback.model.employee.Employee;
-import com.hs.coursemanagerback.model.employee.dto.*;
+import com.hs.coursemanagerback.model.employee.dto.EmployeeDto;
 import com.hs.coursemanagerback.service.employee.EmployeeDataService;
 import com.hs.coursemanagerback.service.employee.EmployeeDocumentService;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +26,9 @@ public class EmployeeController {
 
     private final EmployeeDataService employeeDataService;
     private final EmployeeDocumentService employeeDocumentService;
+
+    @Autowired
+    Logger logger;
 
     @Autowired
     public EmployeeController(EmployeeDataService employeeDataService, EmployeeDocumentService employeeDocumentService) {
@@ -61,38 +61,23 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeDataService.patch(id, employeeDto));
     }
 
-    @PostMapping(value = "/course-plan", produces = MediaType.TEXT_HTML_VALUE)
-    public ResponseEntity<byte[]> getRepresentation(@RequestBody List<List<Long>> employeesIds) {
-        return generateFileResponse(employeeDocumentService.generateCoursePlan(employeesIds));
-    }
-
     @PostMapping(value = "/{id}/documents/representation", produces = MediaType.TEXT_HTML_VALUE)
-    public ResponseEntity<byte[]> getRepresentation(@PathVariable(name = "id") Long employeeId, @RequestBody RepresentationDto representationDto) {
-        return getDocument(employeeId, representationDto);
+    public ResponseEntity<String> getRepresentation(@PathVariable(name = "id") Long employeeId, @RequestBody RepresentationDto representationDto) {
+        return ResponseEntity.ok(employeeDocumentService.generateDocument(employeeId, representationDto));
     }
 
     @PostMapping(value = "/{id}/documents/qualification-sheet", produces = MediaType.TEXT_HTML_VALUE)
-    public ResponseEntity<byte[]> getQualificationSheet(@PathVariable(name = "id") Long employeeId, @RequestBody QualificationSheetDto qualificationSheetDto) {
-        return getDocument(employeeId, qualificationSheetDto);
+    public ResponseEntity<String> getQualificationSheet(@PathVariable(name = "id") Long employeeId, @RequestBody QualificationSheetDto qualificationSheetDto) {
+        return ResponseEntity.ok(employeeDocumentService.generateDocument(employeeId, qualificationSheetDto));
     }
 
     @PostMapping(value = "/{id}/documents/professional-report", produces = MediaType.TEXT_HTML_VALUE)
-    public ResponseEntity<byte[]> getProfessionalReport(@PathVariable(name = "id") Long employeeId, @RequestBody ProfessionalReportDto professionalReportDto) {
-        return getDocument(employeeId, professionalReportDto);
+    public ResponseEntity<String> getProfessionalReport(@PathVariable(name = "id") Long employeeId, @RequestBody ProfessionalReportDto professionalReportDto) {
+        return ResponseEntity.ok(employeeDocumentService.generateDocument(employeeId, professionalReportDto));
     }
 
-    private ResponseEntity<byte[]> getDocument(Long employeeId, DocumentDto documentDto) {
-        return generateFileResponse(employeeDocumentService.generateDocument(employeeId, documentDto));
-    }
-
-    private ResponseEntity<byte[]> generateFileResponse(ByteArrayInputStream bis) {
-        byte[] byteArray = bis.readAllBytes();
-
-        var headers = new HttpHeaders();
-        headers.setContentType(MediaType.valueOf(MediaType.TEXT_HTML_VALUE));
-        headers.setContentLength(byteArray.length);
-        headers.add("Content-Disposition", "inline; filename=document.html");
-
-        return new ResponseEntity<>(byteArray, headers, HttpStatus.OK);
+    @PostMapping(value = "/course-plan")
+    public ResponseEntity<String> getCoursePlan(@RequestBody List<List<Long>> employeesIds) {
+        return ResponseEntity.ok(employeeDocumentService.generateCoursePlan(employeesIds));
     }
 }
