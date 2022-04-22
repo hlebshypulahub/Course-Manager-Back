@@ -11,7 +11,7 @@
     <groupId>com.example</groupId>
     <artifactId>Praca-Inz-Ledikom-Kursy</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Praca Inz Ledikom Kursy</name>
+    <name>Course Manager</name>
     <description>Course Manager Application</description>
     <properties>
         <java.version>11</java.version>

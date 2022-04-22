@@ -1,5 +1,6 @@
 package com.hs.coursemanagerback.service.employee;
 
+import com.hs.coursemanagerback.documents.DocumentString;
 import com.hs.coursemanagerback.model.employee.Employee;
 import com.hs.coursemanagerback.service.user.PrincipleService;
 import org.apache.commons.lang3.StringUtils;
@@ -11,9 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDate;
 
 @Service
@@ -21,12 +19,14 @@ public class EmployeeNoteService {
 
     private final JavaMailSender javaMailSender;
     private final PrincipleService principleService;
+    private final DocumentString documentString;
     private final Logger logger;
 
     @Autowired
-    public EmployeeNoteService(JavaMailSender javaMailSender, PrincipleService principleService, Logger logger) {
+    public EmployeeNoteService(JavaMailSender javaMailSender, PrincipleService principleService, DocumentString documentString, Logger logger) {
         this.javaMailSender = javaMailSender;
         this.principleService = principleService;
+        this.documentString = documentString;
         this.logger = logger;
     }
 
@@ -75,7 +75,7 @@ public class EmployeeNoteService {
     }
 
     private String generateNote(Employee employee) {
-        String html = getForm();
+        String html = documentString.getNotification();
 
         if (StringUtils.isNotBlank(employee.getNote())) {
             StringBuilder sb = new StringBuilder("<h4>Заметки:</h4>\n");
@@ -91,17 +91,4 @@ public class EmployeeNoteService {
 
         return html;
     }
-
-    private String getForm() {
-        String form = "";
-
-        try {
-            form = Files.readString(Path.of("src/main/java/com/hs/coursemanagerback/html-forms/notification.html"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return form;
-    }
-
 }

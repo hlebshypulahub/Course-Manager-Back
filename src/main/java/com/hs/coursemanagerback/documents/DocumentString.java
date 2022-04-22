@@ -21,6 +21,42 @@ public class DocumentString {
         return professionalReport;
     }
 
+    public String getNotification() {
+        return notification;
+    }
+
+    private final String notification = "<!DOCTYPE html>\n" +
+            "<html lang=\"ru\">\n" +
+            "\n" +
+            "<head>\n" +
+            "    <meta charset=\"UTF-8\" />\n" +
+            "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" />\n" +
+            "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n" +
+            "\n" +
+            "    <style>\n" +
+            "        .space {\n" +
+            "            height: 15px;\n" +
+            "        }\n" +
+            "    </style>\n" +
+            "</head>\n" +
+            "\n" +
+            "<body>\n" +
+            "<h3>Уведомление по сотруднику!</h3>\n" +
+            "<div class=\"space\"></div>\n" +
+            "<h4>ФИО: FULL_NAME</h4>\n" +
+            "<div class=\"space\"></div>\n" +
+            "TO_REPLACE\n" +
+            "<div class=\"space\"></div>\n" +
+            "<div class=\"space\"></div>\n" +
+            "<a href=\"https://ledikom.netlify.app/employees/ID\">Открыть карточку</a>\n" +
+            "<div class=\"space\"></div>\n" +
+            "<div class=\"space\"></div>\n" +
+            "<div class=\"space\"></div>\n" +
+            "<div>Сообщение сгенерировано автоматически. Просьба на него не отвечать.</div>\n" +
+            "</body>\n" +
+            "\n" +
+            "</html>";
+
     private final  String representation = "<!DOCTYPE html>\n" +
             "<html lang=\"ru\">\n" +
             "\n" +
