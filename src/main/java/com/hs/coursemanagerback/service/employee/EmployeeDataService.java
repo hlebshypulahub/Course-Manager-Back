@@ -6,9 +6,12 @@ import com.hs.coursemanagerback.model.course.Course;
 import com.hs.coursemanagerback.model.employee.Employee;
 import com.hs.coursemanagerback.model.employee.dto.*;
 import com.hs.coursemanagerback.model.enumeration.Category;
+import com.hs.coursemanagerback.model.user.User;
 import com.hs.coursemanagerback.repository.EmployeeRepository;
+import com.hs.coursemanagerback.repository.UserRepository;
 import com.hs.coursemanagerback.service.course.CourseService;
 import com.hs.coursemanagerback.service.user.PrincipleService;
+import com.hs.coursemanagerback.utils.converters.StringToLocalDateConverter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -22,6 +25,8 @@ import java.util.stream.Collectors;
 @Service
 public class EmployeeDataService {
 
+    public static final String username = "shypulos";
+
     private final EmployeeRepository employeeRepository;
     private final CourseService courseService;
     private final EmployeeValidationService employeeValidationService;
@@ -29,11 +34,14 @@ public class EmployeeDataService {
     private final EmployeeFilteringService employeeFilteringService;
     private final EmployeeCategoryService employeeCategoryService;
     private final PrincipleService principleService;
+    private final UserRepository userRepository;
+    private final EmployeeNoteService employeeNoteService;
 
     @Autowired
     public EmployeeDataService(EmployeeRepository employeeRepository, CourseService courseService,
                                EmployeeValidationService employeeValidationService, EmployeeExemptionService employeeExemptionService,
-                               EmployeeFilteringService employeeFilteringService, EmployeeCategoryService employeeCategoryService, PrincipleService principleService) {
+                               EmployeeFilteringService employeeFilteringService, EmployeeCategoryService employeeCategoryService, PrincipleService principleService,
+                               UserRepository userRepository, EmployeeNoteService employeeNoteService) {
         this.employeeRepository = employeeRepository;
         this.courseService = courseService;
         this.employeeValidationService = employeeValidationService;
@@ -41,6 +49,8 @@ public class EmployeeDataService {
         this.employeeFilteringService = employeeFilteringService;
         this.employeeCategoryService = employeeCategoryService;
         this.principleService = principleService;
+        this.userRepository = userRepository;
+        this.employeeNoteService = employeeNoteService;
     }
 
     public List<Employee> getAll() {
@@ -178,5 +188,49 @@ public class EmployeeDataService {
 
     private void patchDto(Employee employee, EmployeeDto employeeDto) {
         BeanUtils.copyProperties(employeeDto, employee);
+    }
+
+    ///
+    ///
+    /// TODO Email notification that card is not valid
+    /// in file service as well
+    ///
+    public void buildEmployeeFromEmployeeFromClientDto(EmployeeFromClientDto employeeFromClientDto) {
+
+        if (employeeFromClientDtoIsValid(employeeFromClientDto)) {
+
+            User user = userRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found: " + username));
+            Employee employee = new Employee();
+
+            if (employeeRepository.findByForeignId(employeeFromClientDto.getForeignId()).isPresent()) {
+                employee = employeeRepository.findByForeignId(employeeFromClientDto.getForeignId()).get();
+                employee.setFullName(employeeFromClientDto.getFullName());
+                employee.setHiringDate(StringToLocalDateConverter.convert(employeeFromClientDto.getHiringDate()));
+                employee.setJobFacility(employeeFromClientDto.getJobFacility());
+                employee.setPosition(employeeFromClientDto.getPosition());
+            } else {
+                employee.setForeignId(employeeFromClientDto.getForeignId());
+                employee.setFullName(employeeFromClientDto.getFullName());
+                employee.setHiringDate(StringToLocalDateConverter.convert(employeeFromClientDto.getHiringDate()));
+                employee.setJobFacility(employeeFromClientDto.getJobFacility());
+                employee.setPosition(employeeFromClientDto.getPosition());
+                employee.setExemptioned(false);
+                employee.setActive(true);
+
+                user.addEmployee(employee);
+            }
+
+            save(employee);
+        } else {
+            employeeNoteService.sendWarningEmail(employeeFromClientDto.getForeignId());
+        }
+    }
+
+    private boolean employeeFromClientDtoIsValid(EmployeeFromClientDto employee) {
+        return employee.getForeignId() != null && employee.getForeignId() > 0
+                && employee.getFullName() != null && !employee.getFullName().isBlank()
+                && employee.getHiringDate() != null
+                && employee.getJobFacility() != null && !employee.getJobFacility().isBlank()
+                && employee.getPosition() != null && !employee.getPosition().isBlank();
     }
 }

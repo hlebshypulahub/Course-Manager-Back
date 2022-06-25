@@ -2,6 +2,7 @@ package com.hs.coursemanagerback.service.employee;
 
 import com.hs.coursemanagerback.model.employee.Employee;
 import com.hs.coursemanagerback.service.course.CourseService;
+import com.hs.coursemanagerback.service.file.FileService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,14 +17,17 @@ public class EmployeePostConstructService {
     private final EmployeeDataService employeeDataService;
     private final CourseService courseService;
     private final EmployeeNoteService employeeNoteService;
+    private final FileService fileService;
     private final Logger logger;
 
     @Autowired
-    public EmployeePostConstructService(EmployeeDataService employeeDataService, CourseService courseService, EmployeeNoteService employeeNoteService, Logger logger) {
+    public EmployeePostConstructService(EmployeeDataService employeeDataService, CourseService courseService,
+                                        EmployeeNoteService employeeNoteService, Logger logger, FileService fileService) {
         this.employeeNoteService = employeeNoteService;
         this.employeeDataService = employeeDataService;
         this.courseService = courseService;
         this.logger = logger;
+        this.fileService = fileService;
     }
 
     /// "0 0 6 * * *" every day 6 a.m.
@@ -32,6 +36,7 @@ public class EmployeePostConstructService {
     @PostConstruct
     public void processEmployees() {
         List<Employee> employees = employeeDataService.getAll();
+
         for (Employee employee : employees) {
             courseService.process(employee);
             employeeNoteService.process(employee);
@@ -39,5 +44,7 @@ public class EmployeePostConstructService {
             /// Saving
             employeeDataService.save(employee);
         }
+
+        fileService.processFiles();
     }
 }
