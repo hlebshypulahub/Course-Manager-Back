@@ -7,6 +7,7 @@ import com.hs.coursemanagerback.service.user.PrincipleService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,9 @@ import java.time.LocalDate;
 
 @Service
 public class EmployeeNoteService {
+
+    @Value("${coursemanager.app.username}")
+    private String username;
 
     private final JavaMailSender javaMailSender;
     private final PrincipleService principleService;
@@ -74,7 +78,7 @@ public class EmployeeNoteService {
                 "Валидация не пройдена! Пожалуйста, проверьте информацию в карточке или свяжитесь с разработчиками!";
 
         helper.setText(htmlMsg, true);
-        helper.setTo(userRepository.findByUsername(EmployeeDataService.username).get().getEmail());
+        helper.setTo(userRepository.findByUsername(username).get().getEmail());
         helper.setSubject("Ошибка обработки данных");
         helper.setFrom("course.manager@bot.by");
 

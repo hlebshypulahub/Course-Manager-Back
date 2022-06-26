@@ -5,6 +5,7 @@ import com.hs.coursemanagerback.model.employee.dto.EmployeeFromClientDto;
 import com.hs.coursemanagerback.service.employee.EmployeeDataService;
 import com.hs.coursemanagerback.service.employee.EmployeeFileService;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,18 +25,20 @@ import java.util.stream.Collectors;
 @Service
 public class FileService {
 
-    private static final String URL = "http://82.209.251.148:60080";
-    private static final String FILELIST_URL = URL + "/filelist";
+    @Value("${coursemanager.app.filehostURL}")
+    private String URL;
     @Value("${spring.servlet.multipart.location}")
     public String uploadDir;
 
     private final EmployeeFileService employeeFileService;
     private final EmployeeDataService employeeDataService;
+    private final Logger logger;
 
     @Autowired
-    public FileService(EmployeeDataService employeeDataService, EmployeeFileService employeeFileService) {
+    public FileService(EmployeeDataService employeeDataService, EmployeeFileService employeeFileService, Logger logger) {
         this.employeeFileService = employeeFileService;
         this.employeeDataService = employeeDataService;
+        this.logger = logger;
     }
 
     public void uploadFile(MultipartFile file) {
@@ -62,10 +65,14 @@ public class FileService {
     public void processFiles() {
         List<String> fileNames = getFileNames();
 
-        for (String fileName : fileNames) {
-            String fileContent = getFileContent(fileName);
-            EmployeeFromClientDto employeeFromClientDto = buildDtoFromFileContent(fileContent);
-            employeeDataService.buildEmployeeFromEmployeeFromClientDto(employeeFromClientDto);
+        logger.info("Filenames: " + fileNames);
+
+        if (fileNames != null) {
+            for (String fileName : fileNames) {
+                String fileContent = getFileContent(fileName);
+                EmployeeFromClientDto employeeFromClientDto = buildDtoFromFileContent(fileContent);
+                employeeDataService.buildEmployeeFromEmployeeFromClientDto(employeeFromClientDto);
+            }
         }
     }
 
@@ -110,7 +117,7 @@ public class FileService {
     }
 
     public List<String> getFileNames() {
-        try (InputStream in = new URL(FILELIST_URL).openStream()) {
+        try (InputStream in = new URL(URL + "/filelist").openStream()) {
             byte[] bytes = in.readAllBytes();
 
             String fileString = new String(bytes, Charset.defaultCharset());

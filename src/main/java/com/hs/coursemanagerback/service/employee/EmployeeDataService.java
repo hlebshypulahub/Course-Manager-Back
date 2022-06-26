@@ -14,6 +14,7 @@ import com.hs.coursemanagerback.service.user.PrincipleService;
 import com.hs.coursemanagerback.utils.converters.StringToLocalDateConverter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,8 @@ import java.util.stream.Collectors;
 @Service
 public class EmployeeDataService {
 
-    public static final String username = "shypulos";
+    @Value("${coursemanager.app.username}")
+    private String username;
 
     private final EmployeeRepository employeeRepository;
     private final CourseService courseService;
