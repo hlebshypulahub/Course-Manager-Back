@@ -39,7 +39,7 @@ public class EmployeeNotNoneCategoryServiceTests {
 
         assertEquals(Employee.ACT_ENTRY_INTO_FORCE_DATE.plusYears(Employee.CATEGORY_VERIFICATION_YEARS), employee.getCategoryAssignmentDeadlineDate());
         assertEquals(Employee.ACT_ENTRY_INTO_FORCE_DATE.plusYears(Employee.CATEGORY_VERIFICATION_YEARS).minusMonths(Employee.DOCS_SUBMIT_MONTHS), employee.getDocsSubmitDeadlineDate());
-        assertEquals(date.plusYears(Employee.WORK_EXPIRIANCE_TO_CATEGORY_PROMOTION_YEARS), employee.getCategoryPossiblePromotionDate());
+        assertEquals(date.plusYears(Employee.WORK_EXPERIENCE_TO_CATEGORY_PROMOTION_YEARS), employee.getCategoryPossiblePromotionDate());
     }
 
     @Test
@@ -52,6 +52,6 @@ public class EmployeeNotNoneCategoryServiceTests {
 
         assertEquals(date.plusYears(Employee.CATEGORY_VERIFICATION_YEARS), employee.getCategoryAssignmentDeadlineDate());
         assertEquals(date.plusYears(Employee.CATEGORY_VERIFICATION_YEARS).minusMonths(Employee.DOCS_SUBMIT_MONTHS), employee.getDocsSubmitDeadlineDate());
-        assertEquals(date.plusYears(Employee.WORK_EXPIRIANCE_TO_CATEGORY_PROMOTION_YEARS), employee.getCategoryPossiblePromotionDate());
+        assertEquals(date.plusYears(Employee.WORK_EXPERIENCE_TO_CATEGORY_PROMOTION_YEARS), employee.getCategoryPossiblePromotionDate());
     }
 }

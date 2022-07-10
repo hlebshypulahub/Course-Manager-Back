@@ -60,7 +60,7 @@ public class EmployeeDataService {
     }
 
     public List<Employee> getAllForPrincipal() {
-        return employeeRepository.findAllByUserId(principleService.getPrincipalUser().getId());
+        return employeeRepository.findAllByUserIdAndPharmacy(principleService.getPrincipalUser().getId(), true);
     }
 
     public List<Employee> getAllForCoursePlan() {
@@ -144,7 +144,7 @@ public class EmployeeDataService {
     public Employee patch(Long id, EmployeeDto employeeDto) {
         Employee employee = findById(id);
 
-        if (employeeDto instanceof EmployeeNoteDto || employeeDto instanceof EmployeeActiveDto || employeeDto instanceof EmployeeEducationDto) {
+        if (employeeDto instanceof EmployeeNoteDto || employeeDto instanceof EmployeeActiveDto || employeeDto instanceof EmployeeEducationDto || employeeDto instanceof EmployeePharmacyDto) {
             patchDto(employee, employeeDto);
         } else if (employeeDto instanceof EmployeeCategoryDto) {
             patchEmployeeCategory(employee, employeeDto);

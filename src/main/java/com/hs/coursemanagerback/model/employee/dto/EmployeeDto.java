@@ -10,7 +10,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = EmployeeCategoryDeadlineDto.class, name = "categoryDeadline"),
         @JsonSubTypes.Type(value = EmployeeExemptionDto.class, name = "exemption"),
         @JsonSubTypes.Type(value = EmployeeActiveDto.class, name = "active"),
-        @JsonSubTypes.Type(value = EmployeeNoteDto.class, name = "note")
+        @JsonSubTypes.Type(value = EmployeeNoteDto.class, name = "note"),
+        @JsonSubTypes.Type(value = EmployeePharmacyDto.class, name = "pharmacy")
 })
 public abstract class EmployeeDto {
 }
