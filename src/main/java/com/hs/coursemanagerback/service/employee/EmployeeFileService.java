@@ -52,6 +52,7 @@ public class EmployeeFileService {
                     employee.setPosition(employeeAttributes[4]);
                     employee.setExemptioned(false);
                     employee.setActive(true);
+                    employee.setPharmacy(true);
 
                     User user = principleService.getPrincipalUser();
                     user.addEmployee(employee);

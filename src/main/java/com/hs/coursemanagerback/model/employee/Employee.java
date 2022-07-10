@@ -22,7 +22,7 @@ public class Employee {
     @Transient
     public static final LocalDate ACT_ENTRY_INTO_FORCE_DATE = LocalDate.of(2021, 7, 23);
     @Transient
-    public static final int WORK_EXPIRIANCE_TO_CATEGORY_PROMOTION_YEARS = 3;
+    public static final int WORK_EXPERIENCE_TO_CATEGORY_PROMOTION_YEARS = 3;
     @Transient
     public static final int CATEGORY_VERIFICATION_YEARS = 5;
     @Transient
@@ -79,6 +79,9 @@ public class Employee {
 
     /// Active / inactive
     private boolean active;
+
+    /// alter table if exists employee add column pharmacy boolean not null default true
+    private boolean pharmacy;
 
     /// Education
     private Education education;
@@ -160,6 +163,14 @@ public class Employee {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean isPharmacy() {
+        return pharmacy;
+    }
+
+    public void setPharmacy(boolean pharmacy) {
+        this.pharmacy = pharmacy;
     }
 
     public boolean isShouldExtendNotification() {

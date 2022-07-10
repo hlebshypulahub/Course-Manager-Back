@@ -13,7 +13,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     Optional<Employee> findByIdAndUserId(Long id, Long userId);
 
-    List<Employee> findAllByUserId(Long userId);
+    List<Employee> findAllByUserIdAndPharmacy(Long userId, Boolean pharmacy);
 
     List<Employee> findAllByUserIdAndCategoryIsNullAndEducationIsNull(Long userId);
 }
