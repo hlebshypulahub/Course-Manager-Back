@@ -382,10 +382,11 @@ public class Employee {
     }
 
     public String getShortName() {
-        String[] parts = this.fullName.split(" ");
+        String fullName = this.fullName.replaceAll("\\s+", " ");
+        String[] parts = fullName.split(" ");
         if (parts.length == 3) {
             return parts[0] + " " + parts[1].charAt(0) + ". " + parts[2].charAt(0) + ".";
         }
-        return this.fullName;
+        return fullName;
     }
 }
