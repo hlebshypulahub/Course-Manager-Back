@@ -13,8 +13,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @CategoryDatesNotNull
@@ -118,6 +117,7 @@ public class Employee {
                 ", categoryNumber='" + categoryNumber + '\'' +
                 ", categoryAssignmentDate=" + categoryAssignmentDate +
                 ", categoryAssignmentDeadlineDate=" + categoryAssignmentDeadlineDate +
+                ", courseDeadlineDate=" + getCourseDeadlineDate() +
                 ", docsSubmitDeadlineDate=" + docsSubmitDeadlineDate +
                 ", categoryPossiblePromotionDate=" + categoryPossiblePromotionDate +
                 ", courseHoursSum=" + courseHoursSum +
@@ -141,6 +141,10 @@ public class Employee {
         this.courses.add(course);
     }
 
+    public void deleteCourse(Course course) {
+        this.courses.remove(course);
+    }
+
     public Integer getCourseHoursLeft() {
         if (education != null && category != null) {
             int hours;
@@ -155,6 +159,19 @@ public class Employee {
         }
 
         return null;
+    }
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
+    public LocalDate getCourseDeadlineDate() {
+        if (courses.isEmpty()) {
+            return categoryAssignmentDeadlineDate;
+        }
+
+        List<Course> courses = new ArrayList<>(this.courses);
+        courses.sort(Comparator.comparing(Course::getStartDate));
+        LocalDate courseDeadlineDate = courses.get(courses.size() - 1).getStartDate().plusYears(CATEGORY_VERIFICATION_YEARS);
+
+        return categoryAssignmentDeadlineDate.isBefore(courseDeadlineDate) ? categoryAssignmentDeadlineDate : courseDeadlineDate;
     }
 
     public Long getId() {
