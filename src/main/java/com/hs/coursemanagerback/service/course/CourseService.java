@@ -52,8 +52,8 @@ public class CourseService {
         if (employeeValidationService.categoryIsValid(employee)) {
             employee.setCourseHoursSum(employee.getCourses().stream().filter(course ->
                     courseIsBetweenDates(course,
-                            employee.getCategoryAssignmentDeadlineDate().minusYears(Employee.CATEGORY_VERIFICATION_YEARS),
-                            employee.getCategoryAssignmentDeadlineDate())
+                            employee.getCourseDeadlineDate().minusYears(Employee.CATEGORY_VERIFICATION_YEARS),
+                            employee.getCourseDeadlineDate())
             ).mapToInt(Course::getHours).sum());
         }
     }

@@ -45,8 +45,11 @@ public class Employee {
     /// ????????????????????????????????? validate
     @NotBlank(message = "jobFacility cannot be blank")
     private String jobFacility;
+    private Boolean partTime;
     @NotBlank(message = "position cannot be blank")
     private String position;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
+    private LocalDate dob;
 
     /// Category
     private String qualification;
@@ -163,7 +166,7 @@ public class Employee {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     public LocalDate getCourseDeadlineDate() {
-        if (courses.isEmpty()) {
+        if (courses == null || courses.isEmpty()) {
             return categoryAssignmentDeadlineDate;
         }
 
@@ -212,6 +215,14 @@ public class Employee {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
     }
 
     public LocalDate getNotificationDate() {
@@ -276,6 +287,14 @@ public class Employee {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Boolean getPartTime() {
+        return partTime;
+    }
+
+    public void setPartTime(Boolean partTime) {
+        this.partTime = partTime;
     }
 
     public Exemption getExemption() {

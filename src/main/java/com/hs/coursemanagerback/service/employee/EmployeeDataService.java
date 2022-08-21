@@ -144,7 +144,12 @@ public class EmployeeDataService {
     public Employee patch(Long id, EmployeeDto employeeDto) {
         Employee employee = findById(id);
 
-        if (employeeDto instanceof EmployeeNoteDto || employeeDto instanceof EmployeeActiveDto || employeeDto instanceof EmployeeEducationDto || employeeDto instanceof EmployeePharmacyDto) {
+        if (employeeDto instanceof EmployeeNoteDto
+                || employeeDto instanceof EmployeeActiveDto
+                || employeeDto instanceof EmployeeEducationDto
+                || employeeDto instanceof EmployeePharmacyDto
+                || employeeDto instanceof EmployeeDobDto
+                || employeeDto instanceof EmployeePartTimeDto) {
             patchDto(employee, employeeDto);
         } else if (employeeDto instanceof EmployeeCategoryDto) {
             patchEmployeeCategory(employee, employeeDto);
